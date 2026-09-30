@@ -14,7 +14,8 @@ export default defineConfig({
     // Auto-import ant-design-vue components on demand (styles are CSS-in-JS in v4)
     Components({
       resolvers: [AntDesignVueResolver({ importStyle: false })],
-      dts: false,
+      // Generates types for auto-imported <a-*> components so vue-tsc can check them
+      dts: 'src/components.d.ts',
     }),
   ],
   resolve: {

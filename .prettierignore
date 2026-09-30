@@ -3,3 +3,4 @@ coverage
 node_modules
 package-lock.json
 .responsive-shots
+src/components.d.ts

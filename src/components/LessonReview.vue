@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { CheckOutlined, CloseOutlined, ThunderboltFilled } from '@ant-design/icons-vue'
 import { lessonMistakes } from '@/data/lessons'
@@ -6,18 +6,18 @@ import { formatLongDate, relativeDayLabel } from '@/utils/date'
 import CategoryPill from './CategoryPill.vue'
 import SentenceCard from './SentenceCard.vue'
 
-const props = defineProps({
-  lesson: { type: Object, required: true },
-})
+import type { Lesson } from '@/types/lesson'
 
-defineEmits(['practice'])
+const props = defineProps<{ lesson: Lesson }>()
+
+defineEmits<{ practice: [] }>()
 
 const mistakeCount = computed(() => lessonMistakes(props.lesson).length)
 
-const openSentences = ref(new Set())
+const openSentences = ref(new Set<string>())
 const allOpen = computed(() => openSentences.value.size === props.lesson.sentences.length)
 
-function setOpen(label, value) {
+function setOpen(label: string, value: boolean) {
   const next = new Set(openSentences.value)
   if (value) next.add(label)
   else next.delete(label)
@@ -30,7 +30,7 @@ function toggleAll() {
     : new Set(props.lesson.sentences.map((s) => s.label))
 }
 
-const stats = computed(() => [
+const stats = computed<{ label: string; value: number; suffix?: string }[]>(() => [
   { label: 'Score', value: props.lesson.score, suffix: '/10' },
   { label: 'Sentences', value: props.lesson.sentences.length },
   { label: 'Mistakes', value: mistakeCount.value },

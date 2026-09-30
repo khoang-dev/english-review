@@ -9,7 +9,15 @@
 import { existsSync, mkdirSync } from 'node:fs'
 import { chromium } from 'playwright'
 
-const VIEWPORTS = [
+interface Viewport {
+  name: string
+  width: number
+  height: number
+  isMobile?: boolean
+  hasTouch?: boolean
+}
+
+const VIEWPORTS: Viewport[] = [
   { name: 'phone-small', width: 360, height: 740, isMobile: true, hasTouch: true },
   { name: 'phone', width: 390, height: 844, isMobile: true, hasTouch: true },
   { name: 'tablet', width: 768, height: 1024, isMobile: true, hasTouch: true },
@@ -31,6 +39,12 @@ const browser = await chromium.launch({
 
 let failed = false
 
+interface Report {
+  overflow: boolean
+  offenders: string[]
+  smallTargets: string[]
+}
+
 for (const path of paths) {
   for (const { name, ...viewport } of VIEWPORTS) {
     const context = await browser.newContext({
@@ -40,14 +54,14 @@ for (const path of paths) {
       deviceScaleFactor: 1,
     })
     const page = await context.newPage()
-    const errors = []
+    const errors: string[] = []
     page.on('console', (msg) => msg.type() === 'error' && errors.push(msg.text()))
     page.on('pageerror', (err) => errors.push(err.message))
 
     await page.goto(baseUrl + path, { waitUntil: 'networkidle' })
     await page.waitForTimeout(500)
 
-    const report = await page.evaluate((minTap) => {
+    const report: Report = await page.evaluate((minTap: number): Report => {
       const vw = document.documentElement.clientWidth
       const overflow = document.documentElement.scrollWidth > vw
       // Elements sticking out past the right edge (ignoring those inside horizontal scrollers)
@@ -78,7 +92,7 @@ for (const path of paths) {
     const file = `${outDir}/${path.replace(/\W+/g, '_') || 'root'}-${name}.png`
     await page.screenshot({ path: file, fullPage: true })
 
-    const problems = []
+    const problems: string[] = []
     if (report.overflow) problems.push(`horizontal overflow (${report.offenders.join(', ')})`)
     if (errors.length) problems.push(`console errors: ${errors.join(' | ')}`)
     const warnings =

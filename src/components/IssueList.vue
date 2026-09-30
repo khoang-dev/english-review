@@ -1,18 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import {
   BulbFilled,
   CheckCircleFilled,
   CloseCircleFilled,
   ExclamationCircleFilled,
 } from '@ant-design/icons-vue'
+import type { Component } from 'vue'
+import type { Issue, IssueType } from '@/types/lesson'
 import CategoryPill from './CategoryPill.vue'
 
-defineProps({
-  issues: { type: Array, required: true },
-})
+defineProps<{ issues: Issue[] }>()
 
 // antd icons set their own colour, so the Tailwind colour needs `!`
-const typeConfig = {
+const typeConfig: Record<IssueType, { icon: Component; class: string }> = {
   error: { icon: CloseCircleFilled, class: 'text-rose-500!' },
   warning: { icon: ExclamationCircleFilled, class: 'text-amber-500!' },
   tip: { icon: BulbFilled, class: 'text-sky-500!' },

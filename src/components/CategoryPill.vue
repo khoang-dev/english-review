@@ -1,10 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { categories } from '@/data/lessons'
+import type { CategoryKey } from '@/types/lesson'
 
-defineProps({
-  category: { type: String, required: true },
-  count: { type: Number, default: null },
-})
+withDefaults(defineProps<{ category: CategoryKey; count?: number | null }>(), { count: null })
 </script>
 
 <template>

@@ -1,19 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { DownOutlined } from '@ant-design/icons-vue'
 import CategoryPill from './CategoryPill.vue'
 import HighlightText from './HighlightText.vue'
 import IssueList from './IssueList.vue'
+import type { CategoryKey, Sentence } from '@/types/lesson'
 
-const props = defineProps({
-  sentence: { type: Object, required: true },
-})
+const props = defineProps<{ sentence: Sentence }>()
 
-const open = defineModel('open', { type: Boolean, default: false })
+const open = defineModel<boolean>('open', { default: false })
 
 const sentenceCategories = computed(() => [
   ...new Set(
-    props.sentence.issues.filter((i) => i.category && i.type !== 'correct').map((i) => i.category),
+    props.sentence.issues.flatMap((i): CategoryKey[] =>
+      i.category && i.type !== 'correct' ? [i.category] : [],
+    ),
   ),
 ])
 </script>

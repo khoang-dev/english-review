@@ -1,35 +1,41 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { CheckOutlined, CloseOutlined, RightOutlined } from '@ant-design/icons-vue'
 import { categories, lessonMistakes, lessons } from '@/data/lessons'
 import { formatShortDate, relativeDayLabel } from '@/utils/date'
 import CategoryPill from '@/components/CategoryPill.vue'
+import type { CategoryKey, FocusPoint, Mistake } from '@/types/lesson'
 
-const filter = ref('all')
+interface Group {
+  key: CategoryKey
+  mistakes: Mistake[]
+  rules: FocusPoint[]
+}
+
+const filter = ref<CategoryKey | 'all'>('all')
 
 // Every mistake and rule across all lessons, grouped by category, most frequent first
 const groups = computed(() => {
-  const byCategory = {}
+  const byCategory = new Map<CategoryKey, Group>()
+  const group = (key: CategoryKey): Group => {
+    if (!byCategory.has(key)) byCategory.set(key, { key, mistakes: [], rules: [] })
+    return byCategory.get(key)!
+  }
   for (const lesson of lessons) {
-    for (const mistake of lessonMistakes(lesson)) {
-      byCategory[mistake.category] ??= { key: mistake.category, mistakes: [], rules: [] }
-      byCategory[mistake.category].mistakes.push(mistake)
-    }
+    for (const mistake of lessonMistakes(lesson)) group(mistake.category).mistakes.push(mistake)
     for (const point of lesson.focusPoints) {
-      byCategory[point.category] ??= { key: point.category, mistakes: [], rules: [] }
-      if (!byCategory[point.category].rules.some((r) => r.title === point.title)) {
-        byCategory[point.category].rules.push(point)
-      }
+      const { rules } = group(point.category)
+      if (!rules.some((r) => r.title === point.title)) rules.push(point)
     }
   }
-  return Object.values(byCategory).sort((a, b) => b.mistakes.length - a.mistakes.length)
+  return [...byCategory.values()].sort((a, b) => b.mistakes.length - a.mistakes.length)
 })
 
 const visibleGroups = computed(() =>
   filter.value === 'all' ? groups.value : groups.value.filter((g) => g.key === filter.value),
 )
 
-const filterClass = (active) =>
+const filterClass = (active: boolean) =>
   active
     ? 'bg-slate-900 text-white ring-slate-900'
     : 'bg-white text-slate-600 ring-slate-200 hover:bg-slate-100'

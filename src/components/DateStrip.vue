@@ -1,28 +1,28 @@
-<script setup>
+<script setup lang="ts">
 import { nextTick, onMounted, ref, watch } from 'vue'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue'
 import { fromKey, monthYear, todayKey, weekdayShort } from '@/utils/date'
 
-const props = defineProps({
+const props = defineProps<{
   /** Day keys, newest (today) first. */
-  days: { type: Array, required: true },
-  /** Set of day keys that have a review. */
-  reviewDays: { type: Set, required: true },
-})
+  days: string[]
+  /** Day keys that have a review. */
+  reviewDays: Set<string>
+}>()
 
-const active = defineModel({ type: String, required: true })
+const active = defineModel<string>({ required: true })
 
 const today = todayKey()
-const scroller = ref()
-const chips = ref([])
+const scroller = ref<HTMLElement>()
+const chips = ref<HTMLButtonElement[]>([])
 
-function step(direction) {
-  const index = props.days.indexOf(active.value) + direction
-  if (index >= 0 && index < props.days.length) active.value = props.days[index]
+function step(direction: -1 | 1) {
+  const day = props.days[props.days.indexOf(active.value) + direction]
+  if (day) active.value = day
 }
 
 // Keep the active chip centred in the strip without scrolling the page
-function centerActiveChip(behavior = 'smooth') {
+function centerActiveChip(behavior: ScrollBehavior = 'smooth') {
   const chip = chips.value[props.days.indexOf(active.value)]
   if (!chip || !scroller.value) return
   const left = chip.offsetLeft - (scroller.value.clientWidth - chip.offsetWidth) / 2

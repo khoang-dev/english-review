@@ -1,15 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { CoffeeOutlined } from '@ant-design/icons-vue'
 import { formatLongDate, formatShortDate, relativeDayLabel } from '@/utils/date'
 
-const props = defineProps({
-  day: { type: String, required: true },
+const props = defineProps<{
+  day: string
   /** Nearest day that has a review, if any. */
-  nearest: { type: String, default: null },
-})
+  nearest: string | null
+}>()
 
-defineEmits(['go'])
+defineEmits<{ go: [day: string] }>()
 
 const nearestLabel = computed(() => {
   if (!props.nearest) return ''
@@ -32,7 +32,7 @@ const nearestLabel = computed(() => {
     </p>
     <p class="max-w-xs text-sm text-slate-500">
       {{ relativeDayLabel(day) }}, {{ formatLongDate(day) }}. Add your corrected writing for this
-      day to <code class="text-xs">src/data/lessons.js</code> to review it here.
+      day to <code class="text-xs">src/data/lessons.ts</code> to review it here.
     </p>
     <a-button v-if="nearest" type="primary" size="large" class="mt-2" @click="$emit('go', nearest)">
       Go to {{ nearestLabel }}'s review

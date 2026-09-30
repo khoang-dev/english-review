@@ -1,5 +1,7 @@
+import type { Category, CategoryKey, Lesson, Mistake } from '@/types/lesson'
+
 /**
- * Writing review lessons.
+ * Writing review lessons (shape: `Lesson` in src/types/lesson.ts).
  *
  * To add a new lesson, append an object to `lessons` with the same shape.
  * `date` is the local day ('YYYY-MM-DD') the lesson shows up on in the daily review carousel.
@@ -10,7 +12,7 @@
  */
 
 // Full class strings per category so Tailwind can detect them (see tailwind-styling skill)
-export const categories = {
+export const categories: Record<CategoryKey, Category> = {
   articles: { label: 'Articles (a/an)', pill: 'bg-rose-50 text-rose-700 ring-rose-200' },
   plurals: { label: 'Plural nouns', pill: 'bg-amber-50 text-amber-700 ring-amber-200' },
   comparatives: { label: 'Comparatives', pill: 'bg-lime-50 text-lime-700 ring-lime-200' },
@@ -19,7 +21,7 @@ export const categories = {
   meaning: { label: 'Missing meaning', pill: 'bg-teal-50 text-teal-700 ring-teal-200' },
 }
 
-export const lessons = [
+export const lessons: Lesson[] = [
   {
     id: 'health-and-lifestyle',
     title: 'Health & Lifestyle',
@@ -204,15 +206,17 @@ export const lessons = [
 ]
 
 /** Lessons for one 'YYYY-MM-DD' day. */
-export function getLessonsByDate(date) {
+export function getLessonsByDate(date: string): Lesson[] {
   return lessons.filter((lesson) => lesson.date === date)
 }
 
 /** Mistakes (non-correct issues with a category) in a lesson. */
-export function lessonMistakes(lesson) {
+export function lessonMistakes(lesson: Lesson): Mistake[] {
   return lesson.sentences.flatMap((sentence) =>
-    sentence.issues
-      .filter((issue) => issue.category && issue.type !== 'correct')
-      .map((issue) => ({ ...issue, sentence, lesson })),
+    sentence.issues.flatMap((issue) =>
+      issue.category && issue.type !== 'correct'
+        ? [{ ...issue, category: issue.category, sentence, lesson }]
+        : [],
+    ),
   )
 }

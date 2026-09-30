@@ -3,25 +3,29 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run type-check && vite build",
+    "type-check": "vue-tsc --build",
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
-    "check:responsive": "node .claude/skills/mobile-responsive/scripts/check-responsive.mjs"
+    "check:responsive": "node .claude/skills/mobile-responsive/scripts/check-responsive.ts"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,mjs,cjs,vue}": [
+    "*.{ts,vue}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{css,json,md,html}": [
+    "*.{js,mjs,css,json,md,html}": [
       "prettier --write"
     ]
   },
@@ -34,17 +38,23 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^22.20.4",
     "@vitejs/plugin-vue": "^6.0.9",
+    "@vue/eslint-config-typescript": "^14.9.0",
+    "@vue/tsconfig": "^0.9.1",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.11.1",
     "globals": "^17.12.0",
+    "jiti": "^2.7.0",
     "lint-staged": "^17.6.0",
     "playwright": "^1.63.0",
     "prettier": "^3.9.9",
     "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
     "unplugin-vue-components": "^32.1.0",
     "vite": "^8.3.1",
+    "vue-tsc": "^3.3.11",
     "yorkie": "^2.0.0"
   }
 }

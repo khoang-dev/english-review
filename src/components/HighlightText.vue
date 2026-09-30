@@ -1,11 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-  text: { type: String, required: true },
-  phrases: { type: Array, default: () => [] },
-  variant: { type: String, default: 'wrong', validator: (v) => ['wrong', 'right'].includes(v) },
-})
+type Variant = 'wrong' | 'right'
+
+const props = withDefaults(
+  defineProps<{
+    text: string
+    phrases?: string[]
+    variant?: Variant
+  }>(),
+  { phrases: () => [], variant: 'wrong' },
+)
 
 // Split `text` into plain and highlighted segments (first match of each phrase, no overlaps)
 const segments = computed(() => {
@@ -14,7 +19,7 @@ const segments = computed(() => {
     .filter((r) => r.start !== -1)
     .sort((a, b) => a.start - b.start)
 
-  const result = []
+  const result: { text: string; mark: boolean }[] = []
   let cursor = 0
   for (const { start, length } of ranges) {
     if (start < cursor) continue
@@ -26,7 +31,7 @@ const segments = computed(() => {
   return result
 })
 
-const markClass = {
+const markClass: Record<Variant, string> = {
   wrong: 'bg-rose-100 text-rose-700 line-through decoration-rose-400/70',
   right: 'bg-emerald-100 font-medium text-emerald-800',
 }

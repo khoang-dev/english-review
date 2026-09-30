@@ -1,18 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { CheckCircleFilled, InfoCircleFilled } from '@ant-design/icons-vue'
 import HighlightText from './HighlightText.vue'
 import IssueList from './IssueList.vue'
 
-const props = defineProps({
-  lesson: { type: Object, required: true },
-})
+import type { Lesson } from '@/types/lesson'
+
+const props = defineProps<{ lesson: Lesson }>()
 
 const storageKey = computed(() => `mastered:${props.lesson.id}`)
 
-function loadMastered() {
+function loadMastered(): Set<string> {
   try {
-    return new Set(JSON.parse(localStorage.getItem(storageKey.value) ?? '[]'))
+    return new Set(JSON.parse(localStorage.getItem(storageKey.value) ?? '[]') as string[])
   } catch {
     return new Set()
   }
@@ -31,14 +31,15 @@ watch(mastered, (value) => {
 const index = ref(0)
 const answer = ref('')
 const revealed = ref(false)
-const result = ref(null) // 'match' | 'different' | null
+const result = ref<'match' | 'different' | null>(null)
 
-const sentence = computed(() => props.lesson.sentences[index.value])
+// `index` always stays within 0..total-1
+const sentence = computed(() => props.lesson.sentences[index.value]!)
 const total = computed(() => props.lesson.sentences.length)
 const isMastered = computed(() => mastered.value.has(sentence.value.label))
 const percent = computed(() => Math.round((mastered.value.size / total.value) * 100))
 
-function normalize(text) {
+function normalize(text: string): string {
   return text
     .toLowerCase()
     .replace(/[’']/g, "'")
@@ -49,13 +50,15 @@ function normalize(text) {
 
 function check() {
   if (!answer.value.trim()) return
-  const accepted = [sentence.value.corrected, sentence.value.alternative].filter(Boolean)
+  const accepted = [sentence.value.corrected, sentence.value.alternative].filter(
+    (text): text is string => !!text,
+  )
   const matches = accepted.some((text) => normalize(text) === normalize(answer.value))
   result.value = matches ? 'match' : 'different'
   revealed.value = true
 }
 
-function go(step) {
+function go(step: -1 | 1) {
   index.value = (index.value + step + total.value) % total.value
   answer.value = ''
   revealed.value = false

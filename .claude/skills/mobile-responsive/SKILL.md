@@ -42,7 +42,7 @@ scale up. Styling itself follows the `tailwind-styling` skill (Tailwind classes,
 - Sticky sub-headers sit below the 56px top bar: `sticky top-14`.
 - Drawers/modals: bottom sheet on phones, side panel on desktop —
   `:placement="isDesktop ? 'right' : 'bottom'"` with `useMediaQuery('(min-width: 768px)')` from
-  `src/composables/useMediaQuery.js`. Prefer CSS breakpoints; use the composable only for antd
+  `src/composables/useMediaQuery.ts`. Prefer CSS breakpoints; use the composable only for antd
   props that CSS can't change.
 - Use `min-h-dvh` (not `min-h-screen`) so mobile browser toolbars don't cause jumps.
 

@@ -5,7 +5,7 @@ description: Styling rules for this Vue 3 + Ant Design Vue + Tailwind CSS v4 pro
 
 # Styling with Tailwind in this project
 
-Stack: Vue 3 (`<script setup>`), Ant Design Vue 4 (CSS-in-JS, components auto-imported as
+Stack: Vue 3 (`<script setup lang="ts">`, TypeScript), Ant Design Vue 4 (CSS-in-JS, components auto-imported as
 `<a-*>`), Tailwind CSS v4 via `@tailwindcss/vite`. The only stylesheet is
 `src/assets/main.css`.
 

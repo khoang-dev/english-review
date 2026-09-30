@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { lessons, getLessonsByDate } from '@/data/lessons'
@@ -9,6 +9,7 @@ import DayCarousel from '@/components/DayCarousel.vue'
 import DayEmpty from '@/components/DayEmpty.vue'
 import LessonReview from '@/components/LessonReview.vue'
 import PracticeMode from '@/components/PracticeMode.vue'
+import type { Lesson } from '@/types/lesson'
 
 const MIN_DAYS = 14
 
@@ -22,25 +23,28 @@ const reviewDays = new Set(lessons.map((lesson) => lesson.date))
 // Every day from the newest (today, or a later lesson) back to the oldest lesson — newest first
 const days = computed(() => {
   const dates = [...reviewDays, today].sort()
-  const newest = dates[dates.length - 1]
-  const count = Math.max(MIN_DAYS, diffDays(newest, dates[0]) + 1)
+  const newest = dates.at(-1) ?? today
+  const count = Math.max(MIN_DAYS, diffDays(newest, dates[0] ?? today) + 1)
   return Array.from({ length: count }, (_, i) => toKey(addDays(fromKey(newest), -i)))
 })
 
-const activeDay = computed({
-  get: () => (days.value.includes(route.params.date) ? route.params.date : today),
+const activeDay = computed<string>({
+  get: () => {
+    const date = route.params.date
+    return typeof date === 'string' && days.value.includes(date) ? date : today
+  },
   set: (day) => {
     router.replace({ name: 'review', params: day === today ? {} : { date: day } })
   },
 })
 
-const activeIndex = computed({
+const activeIndex = computed<number>({
   get: () => days.value.indexOf(activeDay.value),
-  set: (i) => (activeDay.value = days.value[i]),
+  set: (i) => (activeDay.value = days.value[i] ?? today),
 })
 
 /** Closest day with a review to `day` (searching older days first). */
-function nearestReview(day) {
+function nearestReview(day: string): string | null {
   const i = days.value.indexOf(day)
   const older = days.value.slice(i + 1).find((d) => reviewDays.has(d))
   return (
@@ -54,28 +58,30 @@ function nearestReview(day) {
 }
 
 // Bring the top of the new day into view when switching from far down the page
-const stickyBar = ref()
-const carouselTop = ref()
+const stickyBar = ref<HTMLElement>()
+const carouselTop = ref<HTMLElement>()
 function scrollToDayTop() {
+  if (!carouselTop.value || !stickyBar.value) return
   const top = carouselTop.value.getBoundingClientRect().top
   const offset = 56 + stickyBar.value.offsetHeight + 8
   if (top < offset) window.scrollTo({ top: window.scrollY + top - offset, behavior: 'smooth' })
 }
 
-function changeDay(day) {
+function changeDay(day: string) {
   activeDay.value = day
   scrollToDayTop()
 }
 
-function onKeydown(event) {
-  if (practiceLesson.value || event.target.closest('input, textarea, [contenteditable]')) return
+function onKeydown(event: KeyboardEvent) {
+  const target = event.target as HTMLElement | null
+  if (practiceLesson.value || target?.closest('input, textarea, [contenteditable]')) return
   if (event.key === 'ArrowLeft' && activeIndex.value > 0) activeIndex.value--
   if (event.key === 'ArrowRight' && activeIndex.value < days.value.length - 1) activeIndex.value++
 }
 onMounted(() => window.addEventListener('keydown', onKeydown))
 onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
-const practiceLesson = ref(null)
+const practiceLesson = ref<Lesson | null>(null)
 </script>
 
 <template>

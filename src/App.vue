@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { BookOutlined, CalendarOutlined } from '@ant-design/icons-vue'
 
 const navItems = [
