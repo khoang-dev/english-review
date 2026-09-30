@@ -1,29 +1,20 @@
 <script setup>
-import { ref } from 'vue'
-import { message } from 'ant-design-vue'
-import { SmileOutlined } from '@ant-design/icons-vue'
-
-const count = ref(0)
-
-function increment() {
-  count.value++
-  message.success(`Count is now ${count.value}`)
-}
+import { ReadOutlined } from '@ant-design/icons-vue'
 </script>
 
 <template>
   <div class="mx-auto max-w-2xl">
     <a-card title="Welcome">
       <p class="mb-4 text-gray-600">
-        Vue 3 + Vue Router + Ant Design Vue + Tailwind CSS v4 are ready.
+        Review the corrections on your writing, learn the rules behind them, and practise rewriting
+        the sentences until the mistakes stop coming back.
       </p>
-      <a-space>
-        <a-button type="primary" @click="increment">
-          <template #icon><SmileOutlined /></template>
-          Count: {{ count }}
+      <RouterLink :to="{ name: 'lessons' }">
+        <a-button type="primary">
+          <template #icon><ReadOutlined /></template>
+          Open Knowledge Review
         </a-button>
-        <span class="rounded bg-blue-50 px-2 py-1 text-sm text-blue-600">Tailwind utility</span>
-      </a-space>
+      </RouterLink>
     </a-card>
   </div>
 </template>

@@ -10,6 +10,17 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: '/lessons',
+      name: 'lessons',
+      component: () => import('@/views/LessonsView.vue'),
+    },
+    {
+      path: '/lessons/:id',
+      name: 'lesson',
+      component: () => import('@/views/LessonDetailView.vue'),
+      props: true,
+    },
+    {
       path: '/about',
       name: 'about',
       // Route-level code splitting: lazy-loaded when the route is visited

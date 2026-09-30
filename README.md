@@ -22,3 +22,9 @@ npm run preview    # preview the build
 npm run lint       # eslint --fix
 npm run format     # prettier --write src/
 ```
+
+## Knowledge Review
+
+Writing corrections live in `src/data/lessons.js`. Add a new object to `lessons` (same shape as
+the existing one) and it appears at `/lessons` with a summary, sentence-by-sentence corrections
+filterable by mistake type, and a practice mode.

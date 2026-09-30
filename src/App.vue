@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const selectedKeys = computed(() => [route.name])
+const selectedKeys = computed(() => [route.name === 'lesson' ? 'lessons' : route.name])
 </script>
 
 <template>
@@ -14,6 +14,9 @@ const selectedKeys = computed(() => [route.name])
         <a-menu theme="dark" mode="horizontal" :selected-keys="selectedKeys" class="flex-1 min-w-0">
           <a-menu-item key="home">
             <RouterLink to="/">Home</RouterLink>
+          </a-menu-item>
+          <a-menu-item key="lessons">
+            <RouterLink to="/lessons">Knowledge Review</RouterLink>
           </a-menu-item>
           <a-menu-item key="about">
             <RouterLink to="/about">About</RouterLink>
