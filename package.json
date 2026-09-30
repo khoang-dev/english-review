@@ -1,0 +1,48 @@
+{
+  "name": "english-review",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,json,md,html}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "ant-design-vue": "^4.2.6",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.11.1",
+    "globals": "^17.12.0",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "tailwindcss": "^4.3.3",
+    "unplugin-vue-components": "^32.1.0",
+    "vite": "^8.3.1",
+    "yorkie": "^2.0.0"
+  }
+}
