@@ -12,10 +12,10 @@ defineProps({
 })
 
 const typeConfig = {
-  error: { icon: CloseCircleOutlined, color: '#ef4444' },
-  warning: { icon: ExclamationCircleOutlined, color: '#f97316' },
-  tip: { icon: BulbOutlined, color: '#3b82f6' },
-  correct: { icon: CheckCircleOutlined, color: '#16a34a' },
+  error: { icon: CloseCircleOutlined, class: 'text-red-500!' },
+  warning: { icon: ExclamationCircleOutlined, class: 'text-orange-500!' },
+  tip: { icon: BulbOutlined, class: 'text-blue-500!' },
+  correct: { icon: CheckCircleOutlined, class: 'text-green-600!' },
 }
 </script>
 
@@ -24,8 +24,7 @@ const typeConfig = {
     <li v-for="(issue, index) in issues" :key="index" class="flex gap-2">
       <component
         :is="typeConfig[issue.type].icon"
-        :style="{ color: typeConfig[issue.type].color }"
-        class="mt-1 shrink-0"
+        :class="['mt-1 shrink-0', typeConfig[issue.type].class]"
       />
       <div class="min-w-0">
         <a-tag v-if="issue.category" :color="categories[issue.category].color" class="mb-1">

@@ -25,6 +25,12 @@ export default [
     name: 'app/rules',
     rules: {
       'vue/multi-word-component-names': 'off',
+      // Styling goes through Tailwind classes — see .claude/skills/tailwind-styling
+      'vue/no-restricted-block': [
+        'error',
+        { element: 'style', message: 'Use Tailwind utility classes instead of <style> blocks.' },
+      ],
+      'vue/no-static-inline-styles': ['error', { allowBinding: false }],
     },
   },
   // Must be last: turns off rules that conflict with Prettier
