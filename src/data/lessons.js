@@ -2,25 +2,27 @@
  * Writing review lessons.
  *
  * To add a new lesson, append an object to `lessons` with the same shape.
+ * `date` is the local day ('YYYY-MM-DD') the lesson shows up on in the daily review carousel.
  * - `issues[].type`: 'error' | 'warning' | 'tip' | 'correct'
  * - `issues[].category`: a key of `categories` (omit for purely positive notes)
  * - `highlights`: phrases in `original` that were wrong (highlighted red)
  * - `fixes`: phrases in `corrected` that fixed them (highlighted green)
  */
 
+// Full class strings per category so Tailwind can detect them (see tailwind-styling skill)
 export const categories = {
-  articles: { label: 'Articles (a/an)', color: 'volcano' },
-  plurals: { label: 'Plural nouns', color: 'orange' },
-  comparatives: { label: 'Comparatives', color: 'gold' },
-  collocations: { label: 'Collocations', color: 'geekblue' },
-  'word-choice': { label: 'Word choice', color: 'purple' },
-  meaning: { label: 'Missing meaning', color: 'cyan' },
+  articles: { label: 'Articles (a/an)', pill: 'bg-rose-50 text-rose-700 ring-rose-200' },
+  plurals: { label: 'Plural nouns', pill: 'bg-amber-50 text-amber-700 ring-amber-200' },
+  comparatives: { label: 'Comparatives', pill: 'bg-lime-50 text-lime-700 ring-lime-200' },
+  collocations: { label: 'Collocations', pill: 'bg-sky-50 text-sky-700 ring-sky-200' },
+  'word-choice': { label: 'Word choice', pill: 'bg-violet-50 text-violet-700 ring-violet-200' },
+  meaning: { label: 'Missing meaning', pill: 'bg-teal-50 text-teal-700 ring-teal-200' },
 }
 
 export const lessons = [
   {
     id: 'health-and-lifestyle',
-    title: 'Health & Lifestyle — handwritten sentences',
+    title: 'Health & Lifestyle',
     date: '2026-09-30',
     score: 6.5,
     overview:
@@ -201,6 +203,16 @@ export const lessons = [
   },
 ]
 
-export function getLesson(id) {
-  return lessons.find((lesson) => lesson.id === id)
+/** Lessons for one 'YYYY-MM-DD' day. */
+export function getLessonsByDate(date) {
+  return lessons.filter((lesson) => lesson.date === date)
+}
+
+/** Mistakes (non-correct issues with a category) in a lesson. */
+export function lessonMistakes(lesson) {
+  return lesson.sentences.flatMap((sentence) =>
+    sentence.issues
+      .filter((issue) => issue.category && issue.type !== 'correct')
+      .map((issue) => ({ ...issue, sentence, lesson })),
+  )
 }

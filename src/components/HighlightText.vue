@@ -26,17 +26,20 @@ const segments = computed(() => {
   return result
 })
 
-const markClass = computed(() =>
-  props.variant === 'wrong'
-    ? 'bg-red-100 text-red-700 line-through decoration-red-400'
-    : 'bg-green-100 text-green-800 font-medium',
-)
+const markClass = {
+  wrong: 'bg-rose-100 text-rose-700 line-through decoration-rose-400/70',
+  right: 'bg-emerald-100 font-medium text-emerald-800',
+}
 </script>
 
 <template>
   <span>
     <template v-for="(segment, index) in segments" :key="index">
-      <span v-if="segment.mark" :class="['rounded px-0.5', markClass]">{{ segment.text }}</span>
+      <span
+        v-if="segment.mark"
+        :class="['rounded px-0.5 box-decoration-clone', markClass[variant]]"
+        >{{ segment.text }}</span
+      >
       <template v-else>{{ segment.text }}</template>
     </template>
   </span>

@@ -23,8 +23,22 @@ npm run lint       # eslint --fix
 npm run format     # prettier --write src/
 ```
 
-## Knowledge Review
+## Daily review
 
-Writing corrections live in `src/data/lessons.js`. Add a new object to `lessons` (same shape as
-the existing one) and it appears at `/lessons` with a summary, sentence-by-sentence corrections
-filterable by mistake type, and a practice mode.
+The app opens on today's review (`/review`). Swipe left (or use the date strip / ← → keys) to go
+back through previous days; `/review/YYYY-MM-DD` links to a specific day. `/mistakes` groups every
+mistake by type across all days.
+
+Writing corrections live in `src/data/lessons.js`. Add an object to `lessons` with the `date` it
+belongs to and it appears on that day.
+
+## Checking mobile layouts
+
+With `npm run dev` running:
+
+```sh
+npm run check:responsive -- http://localhost:5173 /review /mistakes
+```
+
+Screenshots at 360/390/768/1280px go to `.responsive-shots/`. Locally, run
+`npx playwright install chromium` once first.

@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
+import { CheckCircleFilled, InfoCircleFilled } from '@ant-design/icons-vue'
 import HighlightText from './HighlightText.vue'
 import IssueList from './IssueList.vue'
 
@@ -19,17 +20,13 @@ function loadMastered() {
 
 const mastered = ref(loadMastered())
 
-watch(
-  mastered,
-  (value) => {
-    try {
-      localStorage.setItem(storageKey.value, JSON.stringify([...value]))
-    } catch {
-      // Storage unavailable (e.g. private mode): progress just won't persist
-    }
-  },
-  { deep: true },
-)
+watch(mastered, (value) => {
+  try {
+    localStorage.setItem(storageKey.value, JSON.stringify([...value]))
+  } catch {
+    // Storage unavailable (e.g. private mode): progress just won't persist
+  }
+})
 
 const index = ref(0)
 const answer = ref('')
@@ -39,6 +36,7 @@ const result = ref(null) // 'match' | 'different' | null
 const sentence = computed(() => props.lesson.sentences[index.value])
 const total = computed(() => props.lesson.sentences.length)
 const isMastered = computed(() => mastered.value.has(sentence.value.label))
+const percent = computed(() => Math.round((mastered.value.size / total.value) * 100))
 
 function normalize(text) {
   return text
@@ -50,6 +48,7 @@ function normalize(text) {
 }
 
 function check() {
+  if (!answer.value.trim()) return
   const accepted = [sentence.value.corrected, sentence.value.alternative].filter(Boolean)
   const matches = accepted.some((text) => normalize(text) === normalize(answer.value))
   result.value = matches ? 'match' : 'different'
@@ -69,92 +68,90 @@ function toggleMastered() {
   else next.add(sentence.value.label)
   mastered.value = next
 }
-
-function resetProgress() {
-  mastered.value = new Set()
-}
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <div class="flex flex-wrap items-center gap-4">
-      <span class="text-gray-500">Mastered {{ mastered.size }} / {{ total }}</span>
-      <a-progress
-        :percent="Math.round((mastered.size / total) * 100)"
-        size="small"
-        class="m-0! max-w-xs flex-1"
-      />
-      <a-button size="small" type="link" :disabled="!mastered.size" @click="resetProgress">
-        Reset
+  <div class="flex flex-col gap-5">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between text-sm">
+        <span class="font-medium text-slate-700">
+          {{ sentence.label }} <span class="text-slate-400">· {{ index + 1 }} of {{ total }}</span>
+        </span>
+        <span class="text-slate-500">{{ mastered.size }}/{{ total }} mastered</span>
+      </div>
+      <!-- Width is a runtime percentage → dynamic :style is the documented exception -->
+      <div class="h-2 overflow-hidden rounded-full bg-slate-100">
+        <div
+          class="h-full rounded-full bg-emerald-500 transition-[width] duration-500"
+          :style="{ width: `${percent}%` }"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <p class="text-sm font-medium text-slate-500">Rewrite this sentence correctly</p>
+      <p class="rounded-2xl bg-slate-50 p-4 text-[15px] leading-relaxed text-slate-800">
+        {{ sentence.original }}
+      </p>
+    </div>
+
+    <a-textarea
+      v-model:value="answer"
+      :auto-size="{ minRows: 3, maxRows: 6 }"
+      placeholder="Type your corrected sentence…"
+      :disabled="revealed"
+      class="text-base!"
+      @press-enter.prevent="check"
+    />
+
+    <div v-if="!revealed" class="grid grid-cols-2 gap-2">
+      <a-button size="large" block @click="revealed = true">Show answer</a-button>
+      <a-button type="primary" size="large" block :disabled="!answer.trim()" @click="check">
+        Check
       </a-button>
     </div>
 
-    <a-card>
-      <template #title>
-        {{ sentence.label }}
-        <span class="ml-2 text-sm font-normal text-gray-400">{{ index + 1 }} / {{ total }}</span>
-      </template>
-      <template #extra>
-        <a-tag v-if="isMastered" color="green">Mastered</a-tag>
-      </template>
+    <div v-else class="flex flex-col gap-4">
+      <p
+        v-if="result === 'match'"
+        class="flex items-center gap-2 rounded-xl bg-emerald-50 p-3 text-sm font-medium text-emerald-800"
+      >
+        <CheckCircleFilled class="text-emerald-500!" /> Correct — it matches the suggested answer.
+      </p>
+      <p
+        v-else-if="result === 'different'"
+        class="flex items-center gap-2 rounded-xl bg-amber-50 p-3 text-sm font-medium text-amber-800"
+      >
+        <InfoCircleFilled class="text-amber-500!" /> Not quite the same — compare with the answer.
+      </p>
 
-      <p class="mb-1 text-sm text-gray-500">Rewrite this sentence correctly:</p>
-      <p class="mb-4 rounded bg-gray-50 p-3 text-base">{{ sentence.original }}</p>
-
-      <a-textarea
-        v-model:value="answer"
-        :auto-size="{ minRows: 2, maxRows: 5 }"
-        placeholder="Type your corrected sentence…"
-        :disabled="revealed"
-        @press-enter.prevent="answer.trim() && check()"
-      />
-
-      <a-space class="mt-3" wrap>
-        <a-button type="primary" :disabled="revealed || !answer.trim()" @click="check">
-          Check
-        </a-button>
-        <a-button :disabled="revealed" @click="revealed = true">Show answer</a-button>
-      </a-space>
-
-      <div v-if="revealed" class="mt-4 flex flex-col gap-4">
-        <a-alert
-          v-if="result === 'match'"
-          type="success"
-          show-icon
-          message="Correct! Your sentence matches the suggested answer."
-        />
-        <a-alert
-          v-else-if="result === 'different'"
-          type="warning"
-          show-icon
-          message="Not quite the same as the suggested answer — compare below."
-        />
-
-        <div>
-          <p class="mb-1 text-sm text-gray-500">Suggested answer</p>
-          <p class="rounded bg-green-50 p-3 text-base">
-            <HighlightText :text="sentence.corrected" :phrases="sentence.fixes" variant="right" />
-          </p>
-          <p v-if="sentence.alternative" class="mt-2 text-sm text-gray-600">
-            More natural: <em>{{ sentence.alternative }}</em>
-          </p>
-        </div>
-
-        <div>
-          <p class="mb-2 text-sm text-gray-500">Why</p>
-          <IssueList :issues="sentence.issues" />
-        </div>
+      <div class="rounded-2xl bg-emerald-50 p-4 ring-1 ring-emerald-100">
+        <p class="mb-1 text-xs font-semibold tracking-wide text-emerald-700 uppercase">
+          Suggested answer
+        </p>
+        <p class="text-[15px] leading-relaxed text-slate-800">
+          <HighlightText :text="sentence.corrected" :phrases="sentence.fixes" variant="right" />
+        </p>
+        <p v-if="sentence.alternative" class="mt-2 text-sm text-slate-600">
+          <span class="font-medium">More natural:</span> <em>{{ sentence.alternative }}</em>
+        </p>
       </div>
 
-      <a-divider />
+      <IssueList :issues="sentence.issues" />
 
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <a-button @click="go(-1)">Previous</a-button>
-        <a-button :type="isMastered ? 'default' : 'dashed'" @click="toggleMastered">
-          {{ isMastered ? 'Unmark mastered' : 'Mark as mastered' }}
-        </a-button>
-        <a-button type="primary" ghost @click="go(1)">Next</a-button>
-      </div>
-    </a-card>
+      <a-button
+        size="large"
+        block
+        :type="isMastered ? 'default' : 'dashed'"
+        @click="toggleMastered"
+      >
+        {{ isMastered ? '✓ Mastered — undo' : 'I know this now — mark as mastered' }}
+      </a-button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 border-t border-slate-100 pt-4">
+      <a-button size="large" block @click="go(-1)">Previous</a-button>
+      <a-button size="large" block type="primary" ghost @click="go(1)">Next</a-button>
+    </div>
   </div>
 </template>

@@ -1,30 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
+import ReviewView from '@/views/ReviewView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: '/', redirect: { name: 'review' } },
     {
-      path: '/',
-      name: 'home',
-      component: HomeView,
+      // Daily review carousel; without a date it opens on today
+      path: '/review/:date(\\d{4}-\\d{2}-\\d{2})?',
+      name: 'review',
+      component: ReviewView,
     },
     {
-      path: '/lessons',
-      name: 'lessons',
-      component: () => import('@/views/LessonsView.vue'),
-    },
-    {
-      path: '/lessons/:id',
-      name: 'lesson',
-      component: () => import('@/views/LessonDetailView.vue'),
-      props: true,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // Route-level code splitting: lazy-loaded when the route is visited
-      component: () => import('@/views/AboutView.vue'),
+      path: '/mistakes',
+      name: 'mistakes',
+      component: () => import('@/views/MistakesView.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
@@ -32,6 +22,11 @@ const router = createRouter({
       component: () => import('@/views/NotFoundView.vue'),
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    // Swiping days only changes the date param — keep the scroll position then
+    if (to.name === from.name && to.name === 'review') return false
+    return savedPosition ?? { top: 0 }
+  },
 })
 
 export default router

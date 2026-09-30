@@ -70,6 +70,8 @@ CSS cascade layers decide who wins:
 
 ## Layout and responsiveness
 
+Full rules and the required screenshot check live in the `mobile-responsive` skill.
+
 - Mobile-first: base classes target phones, add `sm:`/`md:`/`lg:` for larger screens
   (`grid gap-4 md:grid-cols-2`).
 - Page content wrapper: `mx-auto flex max-w-4xl flex-col gap-4`.

@@ -6,7 +6,7 @@ import globals from 'globals'
 export default [
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/coverage/**', '**/node_modules/**'],
+    ignores: ['**/dist/**', '**/.responsive-shots/**', '**/coverage/**', '**/node_modules/**'],
   },
   {
     name: 'app/globals',
