@@ -32,6 +32,7 @@ declare module 'vue' {
     PracticeDrawer: typeof import('./components/practice/PracticeDrawer.vue')['default']
     PracticeHub: typeof import('./components/practice/PracticeHub.vue')['default']
     PracticeResult: typeof import('./components/practice/PracticeResult.vue')['default']
+    ProgressChart: typeof import('./components/ProgressChart.vue')['default']
     ProgressHeader: typeof import('./components/practice/ProgressHeader.vue')['default']
     QuizExercise: typeof import('./components/practice/QuizExercise.vue')['default']
     RewriteExercise: typeof import('./components/practice/RewriteExercise.vue')['default']

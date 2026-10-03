@@ -22,6 +22,7 @@ npm run type-check # vue-tsc only
 npm run preview    # preview the build
 npm run lint       # eslint --fix
 npm run format     # prettier --write src/
+npm run snapshot   # log today's completed course parts to progress-log.json
 ```
 
 ## TypeScript
@@ -34,12 +35,24 @@ npm run format     # prettier --write src/
   `<a-*>` Ant Design components); it updates when the dev server runs — commit it.
 - Node 22.18+ is required (the responsive check script runs `.ts` directly with Node).
 
-## 30-day plan
+## Oct–Dec plan
 
-The app opens on the 30-day dashboard (`/`). Day 1 is the first lesson's day; after 30 days a new
-round starts. It shows today's day number, streak, a 30-day grid (days with new writing / days
-practised) and **What to review** (`KnowledgeSummary`): mastery per mistake type, the key rules
-behind weak types, phrases not mastered yet, and a button to practise only the weak items.
+The app opens on the plan dashboard (`/`), covering every day from 1 Oct to 31 Dec 2026. It shows
+today's day number, streak, a month-by-month calendar (days with new writing / days practised) and
+**What to review** (`KnowledgeSummary`): mastery per mistake type, the key rules behind weak types,
+phrases not mastered yet, and a button to practise only the weak items.
+
+## Course progress
+
+`src/data/courses.json` lists the ROOT, TRUNK and BULK courses: 9 weeks each, every week with 12
+Platform parts and 4 Doc parts. Set `"completed": true` on a part when it's done. The **Course
+progress** card shows completed / all parts, the parts per day needed to finish by 31 Dec, and
+whether you're ahead of, on, or behind the target line. Toggle **Current** (per-course bars, next
+part) or **Chart** (completed vs. target over time, with a daily log).
+
+Daily routine: update `courses.json`, then run `npm run snapshot` to record today's count in
+`src/data/progress-log.json` and commit both. The chart is drawn from those daily snapshots (today
+always uses the live count).
 
 ## Practice
 

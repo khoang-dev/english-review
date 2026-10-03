@@ -1,8 +1,13 @@
 import data from './courses.json'
+import log from './progress-log.json'
 import type { Course, CoursePart } from '@/types/course'
+import type { Snapshot } from '@/utils/pace'
 
 /** ROOT, TRUNK and BULK — 9 weeks each. Mark a part done by setting `completed: true` in courses.json. */
 export const courses: Course[] = data.courses
+
+/** Completed-part counts recorded day by day (npm run snapshot). */
+export const snapshots: Snapshot[] = log.snapshots
 
 export interface PartCount {
   done: number

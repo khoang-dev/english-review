@@ -15,6 +15,7 @@
     "lint:check": "eslint .",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
+    "snapshot": "node scripts/snapshot.ts",
     "check:responsive": "node .claude/skills/mobile-responsive/scripts/check-responsive.ts"
   },
   "gitHooks": {
