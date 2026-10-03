@@ -12,6 +12,7 @@ import { formatLongDate, formatShortDate, todayKey } from '@/utils/date'
 import { dailyChanges, paceSummary, withToday } from '@/utils/pace'
 import { PLAN_END } from '@/utils/plan'
 import DailyBarChart from '@/components/DailyBarChart.vue'
+import { useMediaQuery } from '@/composables/useMediaQuery'
 
 /** Completed course parts out of all parts across ROOT, TRUNK and BULK, with pace to the deadline. */
 const today = todayKey()
@@ -27,16 +28,24 @@ const pace = paceSummary(series, overall.total, PLAN_END, today)
 const days = dailyChanges(series, today)
 const changes = days.filter((day) => day.parts !== undefined)
 
-const partsPoints = changes.map((day) => ({
-  date: day.date,
-  value: day.parts,
-  detail: `${day.completed} of ${overall.total} completed`,
-}))
-const percentPoints = changes.map((day) => ({
-  date: day.date,
-  value: day.percent,
-  detail: `${day.completed - (day.parts ?? 0)} → ${day.completed} parts`,
-}))
+// Charts show the most recent days only: 5 on phones, 10 from tablet/laptop width up
+const isWide = useMediaQuery('(min-width: 768px)')
+const recent = computed(() => changes.slice(isWide.value ? -10 : -5))
+
+const partsPoints = computed(() =>
+  recent.value.map((day) => ({
+    date: day.date,
+    value: day.parts,
+    detail: `${day.completed} of ${overall.total} completed`,
+  })),
+)
+const percentPoints = computed(() =>
+  recent.value.map((day) => ({
+    date: day.date,
+    value: day.percent,
+    detail: `${day.completed - (day.parts ?? 0)} → ${day.completed} parts`,
+  })),
+)
 const formatParts = (n: number) => `${n > 0 ? '+' : ''}${one(n)}`
 const formatPercent = (n: number) => `${n > 0 ? '+' : ''}${one(n)}%`
 
