@@ -42,7 +42,7 @@ const filterClass = (active: boolean) =>
 </script>
 
 <template>
-  <div class="flex flex-col gap-5">
+  <div class="mx-auto flex w-full max-w-3xl flex-col gap-5">
     <div class="px-4">
       <h1 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Mistakes</h1>
       <p class="mt-1 text-sm text-slate-500">

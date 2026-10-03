@@ -1,3 +1,5 @@
+import type { LessonExercises } from './exercise'
+
 export type CategoryKey =
   'articles' | 'plurals' | 'comparatives' | 'collocations' | 'word-choice' | 'meaning'
 
@@ -48,6 +50,11 @@ export interface Lesson {
   strengths: string[]
   focusPoints: FocusPoint[]
   sentences: Sentence[]
+  /**
+   * Extra hand-written practice. Flashcards, fill-in-the-blanks and quiz questions are also
+   * generated from `focusPoints` and `sentences` automatically (src/data/exercises.ts).
+   */
+  exercises?: LessonExercises
 }
 
 export interface Mistake extends Issue {

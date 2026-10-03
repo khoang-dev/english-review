@@ -3,19 +3,19 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { lessons, getLessonsByDate } from '@/data/lessons'
 import { addDays, diffDays, formatShortDate, fromKey, toKey, todayKey } from '@/utils/date'
-import { useMediaQuery } from '@/composables/useMediaQuery'
 import DateStrip from '@/components/DateStrip.vue'
 import DayCarousel from '@/components/DayCarousel.vue'
 import DayEmpty from '@/components/DayEmpty.vue'
 import LessonReview from '@/components/LessonReview.vue'
-import PracticeMode from '@/components/PracticeMode.vue'
+import PracticeDrawer from '@/components/practice/PracticeDrawer.vue'
 import type { Lesson } from '@/types/lesson'
+import type { ExerciseSet, PracticeTab } from '@/types/exercise'
 
-const MIN_DAYS = 14
+// Matches the 30-day plan on the home page
+const MIN_DAYS = 30
 
 const route = useRoute()
 const router = useRouter()
-const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const today = todayKey()
 const reviewDays = new Set(lessons.map((lesson) => lesson.date))
@@ -74,18 +74,27 @@ function changeDay(day: string) {
 
 function onKeydown(event: KeyboardEvent) {
   const target = event.target as HTMLElement | null
-  if (practiceLesson.value || target?.closest('input, textarea, [contenteditable]')) return
+  if (drawer.value.open || target?.closest('input, textarea, [contenteditable]')) return
   if (event.key === 'ArrowLeft' && activeIndex.value > 0) activeIndex.value--
   if (event.key === 'ArrowRight' && activeIndex.value < days.value.length - 1) activeIndex.value++
 }
 onMounted(() => window.addEventListener('keydown', onKeydown))
 onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
-const practiceLesson = ref<Lesson | null>(null)
+const drawer = ref<{
+  open: boolean
+  title: string
+  set: ExerciseSet | null
+  tab?: PracticeTab
+}>({ open: false, title: '', set: null })
+
+function practice(lesson: Lesson, set: ExerciseSet, tab?: PracticeTab) {
+  drawer.value = { open: true, title: `Practice · ${formatShortDate(lesson.date)}`, set, tab }
+}
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="mx-auto flex w-full max-w-3xl flex-col gap-4">
     <div
       ref="stickyBar"
       class="sticky top-14 z-20 -mt-4 border-b border-slate-200/70 bg-slate-50/90 pt-3 pb-2 backdrop-blur-md md:-mt-6 md:pt-4"
@@ -106,7 +115,7 @@ const practiceLesson = ref<Lesson | null>(null)
               v-for="lesson in getLessonsByDate(day)"
               :key="lesson.id"
               :lesson="lesson"
-              @practice="practiceLesson = lesson"
+              @practice="(set, tab) => practice(lesson, set, tab)"
             />
             <DayEmpty
               v-if="!reviewDays.has(day)"
@@ -124,16 +133,11 @@ const practiceLesson = ref<Lesson | null>(null)
       <span class="hidden md:inline">Use ← → keys or swipe to move between days</span>
     </p>
 
-    <a-drawer
-      :open="!!practiceLesson"
-      :placement="isDesktop ? 'right' : 'bottom'"
-      :width="480"
-      height="92%"
-      :title="practiceLesson && `Practice · ${formatShortDate(practiceLesson.date)}`"
-      destroy-on-close
-      @close="practiceLesson = null"
-    >
-      <PracticeMode v-if="practiceLesson" :lesson="practiceLesson" />
-    </a-drawer>
+    <PracticeDrawer
+      v-model:open="drawer.open"
+      :title="drawer.title"
+      :set="drawer.set"
+      :initial-tab="drawer.tab"
+    />
   </div>
 </template>

@@ -1,32 +1,16 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { CheckCircleFilled, InfoCircleFilled } from '@ant-design/icons-vue'
-import HighlightText from './HighlightText.vue'
-import IssueList from './IssueList.vue'
+import { useProgress } from '@/composables/useProgress'
+import { normalize } from '@/utils/text'
+import HighlightText from '../HighlightText.vue'
+import IssueList from '../IssueList.vue'
+import ProgressHeader from './ProgressHeader.vue'
+import type { RewriteExercise } from '@/types/exercise'
 
-import type { Lesson } from '@/types/lesson'
+const props = defineProps<{ items: RewriteExercise[] }>()
 
-const props = defineProps<{ lesson: Lesson }>()
-
-const storageKey = computed(() => `mastered:${props.lesson.id}`)
-
-function loadMastered(): Set<string> {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(storageKey.value) ?? '[]') as string[])
-  } catch {
-    return new Set()
-  }
-}
-
-const mastered = ref(loadMastered())
-
-watch(mastered, (value) => {
-  try {
-    localStorage.setItem(storageKey.value, JSON.stringify([...value]))
-  } catch {
-    // Storage unavailable (e.g. private mode): progress just won't persist
-  }
-})
+const { record, setKnown, stat } = useProgress()
 
 const index = ref(0)
 const answer = ref('')
@@ -34,19 +18,11 @@ const revealed = ref(false)
 const result = ref<'match' | 'different' | null>(null)
 
 // `index` always stays within 0..total-1
-const sentence = computed(() => props.lesson.sentences[index.value]!)
-const total = computed(() => props.lesson.sentences.length)
-const isMastered = computed(() => mastered.value.has(sentence.value.label))
-const percent = computed(() => Math.round((mastered.value.size / total.value) * 100))
-
-function normalize(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[’']/g, "'")
-    .replace(/[^a-z0-9' ]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
+const item = computed(() => props.items[index.value]!)
+const sentence = computed(() => item.value.sentence)
+const total = computed(() => props.items.length)
+const isMastered = computed(() => !!stat(item.value.id)?.known)
+const masteredCount = computed(() => props.items.filter((i) => stat(i.id)?.known).length)
 
 function check() {
   if (!answer.value.trim()) return
@@ -54,6 +30,7 @@ function check() {
     (text): text is string => !!text,
   )
   const matches = accepted.some((text) => normalize(text) === normalize(answer.value))
+  record(item.value.id, matches)
   result.value = matches ? 'match' : 'different'
   revealed.value = true
 }
@@ -64,32 +41,17 @@ function go(step: -1 | 1) {
   revealed.value = false
   result.value = null
 }
-
-function toggleMastered() {
-  const next = new Set(mastered.value)
-  if (next.has(sentence.value.label)) next.delete(sentence.value.label)
-  else next.add(sentence.value.label)
-  mastered.value = next
-}
 </script>
 
 <template>
   <div class="flex flex-col gap-5">
-    <div class="flex flex-col gap-2">
-      <div class="flex items-center justify-between text-sm">
-        <span class="font-medium text-slate-700">
-          {{ sentence.label }} <span class="text-slate-400">· {{ index + 1 }} of {{ total }}</span>
-        </span>
-        <span class="text-slate-500">{{ mastered.size }}/{{ total }} mastered</span>
-      </div>
-      <!-- Width is a runtime percentage → dynamic :style is the documented exception -->
-      <div class="h-2 overflow-hidden rounded-full bg-slate-100">
-        <div
-          class="h-full rounded-full bg-emerald-500 transition-[width] duration-500"
-          :style="{ width: `${percent}%` }"
-        />
-      </div>
-    </div>
+    <ProgressHeader
+      :index="index"
+      :total="total"
+      :done="masteredCount"
+      done-label="mastered"
+      :label="sentence.label"
+    />
 
     <div class="flex flex-col gap-2">
       <p class="text-sm font-medium text-slate-500">Rewrite this sentence correctly</p>
@@ -146,7 +108,7 @@ function toggleMastered() {
         size="large"
         block
         :type="isMastered ? 'default' : 'dashed'"
-        @click="toggleMastered"
+        @click="setKnown(item.id, !isMastered)"
       >
         {{ isMastered ? '✓ Mastered — undo' : 'I know this now — mark as mastered' }}
       </a-button>
