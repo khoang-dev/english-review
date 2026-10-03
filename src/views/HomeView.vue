@@ -83,8 +83,11 @@ const allExercises = computed(() => mergeExercises(lessons.map(getExercises)))
         </div>
 
         <!-- Width is a runtime percentage → dynamic :style is the documented exception -->
-        <div class="h-2 overflow-hidden rounded-full bg-white/20">
-          <div class="h-full rounded-full bg-white" :style="{ width: `${roundPercent}%` }" />
+        <div class="flex items-center gap-3">
+          <div class="h-2 flex-1 overflow-hidden rounded-full bg-white/20">
+            <div class="h-full rounded-full bg-white" :style="{ width: `${roundPercent}%` }" />
+          </div>
+          <span class="text-sm font-semibold">{{ roundPercent }}%</span>
         </div>
 
         <dl class="grid grid-cols-3 gap-2">
