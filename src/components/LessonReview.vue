@@ -9,7 +9,7 @@ import {
   RetweetOutlined,
 } from '@ant-design/icons-vue'
 import type { Component } from 'vue'
-import { firstLessonDay, lessonMistakes } from '@/data/lessons'
+import { lessonMistakes } from '@/data/lessons'
 import { getExercises } from '@/data/exercises'
 import { formatLongDate, relativeDayLabel } from '@/utils/date'
 import { PLAN_LENGTH, planDayNumber } from '@/utils/plan'
@@ -25,9 +25,7 @@ const props = defineProps<{ lesson: Lesson }>()
 const emit = defineEmits<{ practice: [set: ExerciseSet, tab?: PracticeTab] }>()
 
 const exercises = computed(() => getExercises(props.lesson))
-const dayNumber = computed(() =>
-  planDayNumber(firstLessonDay() ?? props.lesson.date, props.lesson.date),
-)
+const dayNumber = computed(() => planDayNumber(props.lesson.date))
 
 const modes: { tab: PracticeTab; label: string; icon: Component }[] = [
   { tab: 'flashcards', label: 'Flashcards', icon: RetweetOutlined },
@@ -69,7 +67,10 @@ const stats = computed<{ label: string; value: number; suffix?: string }[]>(() =
     >
       <div>
         <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-indigo-100">
-          <span class="rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold text-white">
+          <span
+            v-if="dayNumber"
+            class="rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold text-white"
+          >
             Day {{ dayNumber }}/{{ PLAN_LENGTH }}
           </span>
           {{ relativeDayLabel(lesson.date) }} · {{ formatLongDate(lesson.date) }}

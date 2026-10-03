@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { CheckOutlined } from '@ant-design/icons-vue'
-import { formatLongDate, todayKey } from '@/utils/date'
+import { formatLongDate, fromKey, todayKey } from '@/utils/date'
+import { PLAN_MONTHS } from '@/utils/plan'
 
-/** The 30 days of the current plan round as a tappable grid, coloured by what was done. */
+/** Every day of the Oct–Dec plan as month calendars of tappable cells, coloured by what was done. */
 const props = defineProps<{
-  days: string[]
   lessonDays: Set<string>
   practiceDays: Set<string>
 }>()
@@ -21,18 +21,35 @@ const cellClass: Record<CellState, string> = {
   future: 'border border-dashed border-slate-200 text-slate-300',
 }
 
-const cells = computed(() =>
-  props.days.map((day, i) => {
-    const state: CellState =
-      day > today
-        ? 'future'
-        : props.practiceDays.has(day)
-          ? 'practised'
-          : props.lessonDays.has(day)
-            ? 'lesson'
-            : 'missed'
-    return { day, number: i + 1, state, isToday: day === today }
-  }),
+const weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+
+// Monday-first column of a month's first day; static strings so Tailwind detects them
+const colStart = [
+  'col-start-1',
+  'col-start-2',
+  'col-start-3',
+  'col-start-4',
+  'col-start-5',
+  'col-start-6',
+  'col-start-7',
+]
+
+const months = computed(() =>
+  PLAN_MONTHS.map((month) => ({
+    label: month.label,
+    offset: colStart[(fromKey(month.days[0]!).getDay() + 6) % 7],
+    cells: month.days.map((day) => {
+      const state: CellState =
+        day > today
+          ? 'future'
+          : props.practiceDays.has(day)
+            ? 'practised'
+            : props.lessonDays.has(day)
+              ? 'lesson'
+              : 'missed'
+      return { day, number: fromKey(day).getDate(), state, isToday: day === today }
+    }),
+  })),
 )
 
 const legend: { state: CellState; label: string }[] = [
@@ -44,42 +61,49 @@ const legend: { state: CellState; label: string }[] = [
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
-    <ol class="grid grid-cols-6 gap-1.5 sm:grid-cols-10 sm:gap-2">
-      <li v-for="cell in cells" :key="cell.day">
-        <span
-          v-if="cell.state === 'future'"
-          :class="[
-            'flex aspect-square flex-col items-center justify-center rounded-xl',
-            cellClass.future,
-          ]"
-          :title="formatLongDate(cell.day)"
-        >
-          <span class="text-[10px] font-medium">Day</span>
-          <span class="text-sm leading-none font-semibold">{{ cell.number }}</span>
-        </span>
-        <RouterLink
-          v-else
-          :to="{ name: 'review', params: cell.isToday ? {} : { date: cell.day } }"
-          :class="[
-            'relative flex aspect-square flex-col items-center justify-center rounded-xl transition-colors',
-            cellClass[cell.state],
-            cell.isToday && 'ring-2 ring-indigo-600 ring-offset-2',
-          ]"
-          :aria-label="`Day ${cell.number}, ${formatLongDate(cell.day)}`"
-          :title="formatLongDate(cell.day)"
-        >
-          <span class="text-[10px] font-medium opacity-80">
-            {{ cell.isToday ? 'Today' : 'Day' }}
+  <div class="flex flex-col gap-5">
+    <section v-for="month in months" :key="month.label" class="flex flex-col gap-2">
+      <h3 class="text-sm font-semibold text-slate-700">{{ month.label }}</h3>
+      <div
+        class="grid grid-cols-7 gap-1 text-center text-[10px] font-medium text-slate-400 sm:gap-2"
+      >
+        <span v-for="(weekday, i) in weekdays" :key="i">{{ weekday }}</span>
+      </div>
+      <ol class="grid grid-cols-7 gap-1 sm:gap-2">
+        <li v-for="(cell, i) in month.cells" :key="cell.day" :class="i === 0 && month.offset">
+          <span
+            v-if="cell.state === 'future'"
+            :class="[
+              'flex aspect-square items-center justify-center rounded-xl text-sm font-semibold',
+              cellClass.future,
+            ]"
+            :title="formatLongDate(cell.day)"
+          >
+            {{ cell.number }}
           </span>
-          <span class="text-sm leading-none font-semibold">{{ cell.number }}</span>
-          <CheckOutlined
-            v-if="cell.state === 'practised' && lessonDays.has(cell.day)"
-            class="absolute top-1 right-1 text-[9px]"
-          />
-        </RouterLink>
-      </li>
-    </ol>
+          <RouterLink
+            v-else
+            :to="{ name: 'review', params: cell.isToday ? {} : { date: cell.day } }"
+            :class="[
+              'relative flex aspect-square flex-col items-center justify-center rounded-xl transition-colors',
+              cellClass[cell.state],
+              cell.isToday && 'ring-2 ring-indigo-600 ring-offset-2',
+            ]"
+            :aria-label="formatLongDate(cell.day)"
+            :title="formatLongDate(cell.day)"
+          >
+            <span v-if="cell.isToday" class="text-[9px] leading-none font-medium opacity-80">
+              Today
+            </span>
+            <span class="text-sm leading-tight font-semibold">{{ cell.number }}</span>
+            <CheckOutlined
+              v-if="cell.state === 'practised' && lessonDays.has(cell.day)"
+              class="absolute top-1 right-1 text-[9px]"
+            />
+          </RouterLink>
+        </li>
+      </ol>
+    </section>
 
     <ul class="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-slate-500">
       <li v-for="item in legend" :key="item.state" class="flex items-center gap-1.5">

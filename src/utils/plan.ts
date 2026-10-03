@@ -1,34 +1,40 @@
-import { addDays, diffDays, fromKey, toKey, todayKey } from './date'
+import { addDays, diffDays, fromKey, monthYear, toKey, todayKey } from './date'
 
-/**
- * The 30-day review plan: day 1 is the first lesson's day. After 30 days a new round starts,
- * so the plan always shows the 30-day round that contains today.
- */
-export const PLAN_LENGTH = 30
+/** The review plan covers every day of October, November and December 2026. */
+export const PLAN_START = '2026-10-01'
+export const PLAN_END = '2026-12-31'
+export const PLAN_LENGTH = diffDays(PLAN_END, PLAN_START) + 1
 
-export interface PlanRound {
-  /** 1-based round number. */
-  round: number
-  /** The round's 30 day keys, day 1 first. */
+/** Every day key of the plan, first day first. */
+export const PLAN_DAYS: string[] = Array.from({ length: PLAN_LENGTH }, (_, i) =>
+  toKey(addDays(fromKey(PLAN_START), i)),
+)
+
+export interface PlanMonth {
+  /** e.g. 'October 2026'. */
+  label: string
+  /** Day keys of the month, in order. */
   days: string[]
-  /** Today's 1-based day in the round. */
-  todayNumber: number
 }
 
-export function planRound(firstDay: string, today: string = todayKey()): PlanRound {
-  const elapsed = Math.max(0, diffDays(today, firstDay))
-  const roundIndex = Math.floor(elapsed / PLAN_LENGTH)
-  const start = addDays(fromKey(firstDay), roundIndex * PLAN_LENGTH)
-  return {
-    round: roundIndex + 1,
-    days: Array.from({ length: PLAN_LENGTH }, (_, i) => toKey(addDays(start, i))),
-    todayNumber: (elapsed % PLAN_LENGTH) + 1,
-  }
+/** The plan's days grouped by calendar month. */
+export const PLAN_MONTHS: PlanMonth[] = PLAN_DAYS.reduce<PlanMonth[]>((months, day) => {
+  const label = monthYear(day)
+  const current = months.at(-1)
+  if (current?.label === label) current.days.push(day)
+  else months.push({ label, days: [day] })
+  return months
+}, [])
+
+/** 1-based day of `day` within the plan, or undefined when it falls outside it. */
+export function planDayNumber(day: string): number | undefined {
+  const number = diffDays(day, PLAN_START) + 1
+  return number >= 1 && number <= PLAN_LENGTH ? number : undefined
 }
 
-/** 1-based day of `day` within its 30-day round. */
-export function planDayNumber(firstDay: string, day: string): number {
-  return (Math.max(0, diffDays(day, firstDay)) % PLAN_LENGTH) + 1
+/** Days of the plan elapsed so far, today included (0 before it starts). */
+export function planDaysElapsed(today: string = todayKey()): number {
+  return Math.min(PLAN_LENGTH, Math.max(0, diffDays(today, PLAN_START) + 1))
 }
 
 /** Consecutive active days ending today (or yesterday, if today isn't done yet). */

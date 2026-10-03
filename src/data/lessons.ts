@@ -303,8 +303,3 @@ export function lessonMistakes(lesson: Lesson): Mistake[] {
     ),
   )
 }
-
-/** Day 1 of the 30-day plan: the first lesson's day. */
-export function firstLessonDay(): string | undefined {
-  return lessons.map((lesson) => lesson.date).sort()[0]
-}

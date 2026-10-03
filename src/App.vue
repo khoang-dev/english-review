@@ -2,7 +2,7 @@
 import { BookOutlined, CalendarOutlined, FireOutlined } from '@ant-design/icons-vue'
 
 const navItems = [
-  { name: 'home', label: '30 days', icon: FireOutlined },
+  { name: 'home', label: 'Plan', icon: FireOutlined },
   { name: 'review', label: 'Daily review', icon: CalendarOutlined },
   { name: 'mistakes', label: 'Mistakes', icon: BookOutlined },
 ]

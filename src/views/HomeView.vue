@@ -7,11 +7,11 @@ import {
   ReadOutlined,
   ThunderboltFilled,
 } from '@ant-design/icons-vue'
-import { firstLessonDay, getLessonsByDate, lessons } from '@/data/lessons'
+import { getLessonsByDate, lessons } from '@/data/lessons'
 import { getExercises, mergeExercises } from '@/data/exercises'
 import { useProgress } from '@/composables/useProgress'
 import { formatLongDate, formatShortDate, relativeDayLabel, todayKey } from '@/utils/date'
-import { PLAN_LENGTH, planRound, streak } from '@/utils/plan'
+import { PLAN_DAYS, PLAN_END, PLAN_LENGTH, PLAN_START, planDaysElapsed, streak } from '@/utils/plan'
 import KnowledgeSummary from '@/components/KnowledgeSummary.vue'
 import PlanGrid from '@/components/PlanGrid.vue'
 import PracticeDrawer from '@/components/practice/PracticeDrawer.vue'
@@ -20,16 +20,16 @@ import type { ExerciseSet } from '@/types/exercise'
 const { practiceDays } = useProgress()
 
 const today = todayKey()
-const plan = planRound(firstLessonDay() ?? today, today)
+const elapsed = planDaysElapsed(today)
 const lessonDays = new Set(lessons.map((lesson) => lesson.date))
 
 const activeDays = computed(() => new Set([...lessonDays, ...practiceDays.value]))
 const activeInRound = computed(
-  () => plan.days.filter((day) => day <= today && activeDays.value.has(day)).length,
+  () => PLAN_DAYS.filter((day) => day <= today && activeDays.value.has(day)).length,
 )
 const currentStreak = computed(() => streak(activeDays.value, today))
 // Width is a runtime percentage (see :style below)
-const roundPercent = Math.round((plan.todayNumber / PLAN_LENGTH) * 100)
+const roundPercent = Math.round((elapsed / PLAN_LENGTH) * 100)
 
 const todaysLessons = getLessonsByDate(today)
 const latestLesson = [...lessons].sort((a, b) => b.date.localeCompare(a.date))[0]
@@ -39,7 +39,7 @@ const stats = computed(() => [
   { label: 'Day streak', value: currentStreak.value, icon: FireFilled },
   {
     label: 'Active days',
-    value: `${activeInRound.value}/${plan.todayNumber}`,
+    value: `${activeInRound.value}/${elapsed}`,
     icon: CalendarOutlined,
   },
   { label: 'Lessons', value: lessons.length, icon: ReadOutlined },
@@ -69,11 +69,9 @@ const allExercises = computed(() => mergeExercises(lessons.map(getExercises)))
       >
         <div class="flex items-start justify-between gap-3">
           <div class="min-w-0">
-            <p class="text-sm font-medium text-indigo-100">
-              30-day review{{ plan.round > 1 ? ` · Round ${plan.round}` : '' }}
-            </p>
+            <p class="text-sm font-medium text-indigo-100">Oct – Dec 2026 review</p>
             <h1 class="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
-              Day {{ plan.todayNumber }} <span class="text-indigo-200">of {{ PLAN_LENGTH }}</span>
+              Day {{ elapsed }} <span class="text-indigo-200">of {{ PLAN_LENGTH }}</span>
             </h1>
           </div>
           <span
@@ -140,21 +138,21 @@ const allExercises = computed(() => mergeExercises(lessons.map(getExercises)))
         </template>
         <p v-else class="text-sm text-slate-500">
           No writing yet. Add a lesson to <code class="text-xs">src/data/lessons.ts</code> to start
-          your 30 days.
+          your plan.
         </p>
       </section>
 
-      <!-- 30-day grid -->
+      <!-- Oct–Dec calendar -->
       <section
         class="flex flex-col gap-3 rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200 sm:p-5"
       >
         <div class="flex items-baseline justify-between gap-2">
-          <h2 class="text-lg font-bold text-slate-900">Your 30 days</h2>
+          <h2 class="text-lg font-bold text-slate-900">Your plan</h2>
           <span class="text-xs text-slate-400">
-            {{ formatShortDate(plan.days[0]!) }} – {{ formatShortDate(plan.days.at(-1)!) }}
+            {{ formatShortDate(PLAN_START) }} – {{ formatShortDate(PLAN_END) }} 2026
           </span>
         </div>
-        <PlanGrid :days="plan.days" :lesson-days="lessonDays" :practice-days="practiceDays" />
+        <PlanGrid :lesson-days="lessonDays" :practice-days="practiceDays" />
       </section>
     </div>
 

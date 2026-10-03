@@ -11,7 +11,7 @@ import PracticeDrawer from '@/components/practice/PracticeDrawer.vue'
 import type { Lesson } from '@/types/lesson'
 import type { ExerciseSet, PracticeTab } from '@/types/exercise'
 
-// Matches the 30-day plan on the home page
+// Always show at least a month of days in the strip
 const MIN_DAYS = 30
 
 const route = useRoute()
