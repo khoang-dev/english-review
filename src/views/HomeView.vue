@@ -12,6 +12,7 @@ import { getExercises, mergeExercises } from '@/data/exercises'
 import { useProgress } from '@/composables/useProgress'
 import { formatLongDate, formatShortDate, relativeDayLabel, todayKey } from '@/utils/date'
 import { PLAN_DAYS, PLAN_END, PLAN_LENGTH, PLAN_START, planDaysElapsed, streak } from '@/utils/plan'
+import CourseProgress from '@/components/CourseProgress.vue'
 import KnowledgeSummary from '@/components/KnowledgeSummary.vue'
 import PlanGrid from '@/components/PlanGrid.vue'
 import PracticeDrawer from '@/components/practice/PracticeDrawer.vue'
@@ -99,6 +100,8 @@ const allExercises = computed(() => mergeExercises(lessons.map(getExercises)))
           </div>
         </dl>
       </section>
+
+      <CourseProgress />
 
       <!-- Today -->
       <section

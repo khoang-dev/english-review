@@ -18,6 +18,7 @@ declare module 'vue' {
     ASegmented: typeof import('ant-design-vue/es')['Segmented']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     CategoryPill: typeof import('./components/CategoryPill.vue')['default']
+    CourseProgress: typeof import('./components/CourseProgress.vue')['default']
     DateStrip: typeof import('./components/DateStrip.vue')['default']
     DayCarousel: typeof import('./components/DayCarousel.vue')['default']
     DayEmpty: typeof import('./components/DayEmpty.vue')['default']
