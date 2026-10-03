@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { lessons, getLessonsByDate } from '@/data/lessons'
-import { addDays, diffDays, formatShortDate, fromKey, toKey, todayKey } from '@/utils/date'
+import { addDays, diffDays, formatShortDate, todayKey } from '@/utils/date'
 import DateStrip from '@/components/DateStrip.vue'
 import DayCarousel from '@/components/DayCarousel.vue'
 import DayEmpty from '@/components/DayEmpty.vue'
@@ -25,7 +25,7 @@ const days = computed(() => {
   const dates = [...reviewDays, today].sort()
   const newest = dates.at(-1) ?? today
   const count = Math.max(MIN_DAYS, diffDays(newest, dates[0] ?? today) + 1)
-  return Array.from({ length: count }, (_, i) => toKey(addDays(fromKey(newest), -i)))
+  return Array.from({ length: count }, (_, i) => addDays(newest, -i))
 })
 
 const activeDay = computed<string>({

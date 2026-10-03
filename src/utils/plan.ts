@@ -1,4 +1,4 @@
-import { addDays, diffDays, fromKey, monthYear, toKey, todayKey } from './date'
+import { addDays, diffDays, monthYear, todayKey } from './date'
 
 /** The review plan covers every day of October, November and December 2026. */
 export const PLAN_START = '2026-10-01'
@@ -7,7 +7,7 @@ export const PLAN_LENGTH = diffDays(PLAN_END, PLAN_START) + 1
 
 /** Every day key of the plan, first day first. */
 export const PLAN_DAYS: string[] = Array.from({ length: PLAN_LENGTH }, (_, i) =>
-  toKey(addDays(fromKey(PLAN_START), i)),
+  addDays(PLAN_START, i),
 )
 
 export interface PlanMonth {
@@ -39,10 +39,9 @@ export function planDaysElapsed(today: string = todayKey()): number {
 
 /** Consecutive active days ending today (or yesterday, if today isn't done yet). */
 export function streak(active: Set<string>, today: string = todayKey()): number {
-  let day = fromKey(today)
-  if (!active.has(today)) day = addDays(day, -1)
+  let day = active.has(today) ? today : addDays(today, -1)
   let count = 0
-  while (active.has(toKey(day))) {
+  while (active.has(day)) {
     count++
     day = addDays(day, -1)
   }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref, watch } from 'vue'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue'
-import { fromKey, monthYear, todayKey, weekdayShort } from '@/utils/date'
+import { dayOfMonth, monthYear, todayKey, weekdayShort } from '@/utils/date'
 
 const props = defineProps<{
   /** Day keys, newest (today) first. */
@@ -96,7 +96,7 @@ onMounted(() => centerActiveChip('instant'))
         >
           {{ day === today ? 'Today' : weekdayShort(day) }}
         </span>
-        <span class="text-lg leading-none font-semibold">{{ fromKey(day).getDate() }}</span>
+        <span class="text-lg leading-none font-semibold">{{ dayOfMonth(day) }}</span>
         <span
           :class="[
             'size-1.5 rounded-full',

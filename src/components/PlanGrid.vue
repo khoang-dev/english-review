@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { CheckOutlined } from '@ant-design/icons-vue'
-import { formatLongDate, fromKey, todayKey } from '@/utils/date'
+import { dayOfMonth, formatLongDate, todayKey, weekdayIndex } from '@/utils/date'
 import { PLAN_MONTHS } from '@/utils/plan'
 
 /** Every day of the Oct–Dec plan as month calendars of tappable cells, coloured by what was done. */
@@ -37,7 +37,7 @@ const colStart = [
 const months = computed(() =>
   PLAN_MONTHS.map((month) => ({
     label: month.label,
-    offset: colStart[(fromKey(month.days[0]!).getDay() + 6) % 7],
+    offset: colStart[weekdayIndex(month.days[0]!)],
     cells: month.days.map((day) => {
       const state: CellState =
         day > today
@@ -47,7 +47,7 @@ const months = computed(() =>
             : props.lessonDays.has(day)
               ? 'lesson'
               : 'missed'
-      return { day, number: fromKey(day).getDate(), state, isToday: day === today }
+      return { day, number: dayOfMonth(day), state, isToday: day === today }
     }),
   })),
 )

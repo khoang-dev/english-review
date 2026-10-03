@@ -1,30 +1,30 @@
-// Dates are handled as local-time 'YYYY-MM-DD' keys (never toISOString, which is UTC)
+import dayjs from 'dayjs'
 
-export function toKey(date: Date): string {
-  const y = date.getFullYear()
-  const m = String(date.getMonth() + 1).padStart(2, '0')
-  const d = String(date.getDate()).padStart(2, '0')
-  return `${y}-${m}-${d}`
-}
-
-export function fromKey(key: string): Date {
-  const [y = 1970, m = 1, d = 1] = key.split('-').map(Number)
-  return new Date(y, m - 1, d)
-}
-
-export function addDays(date: Date, amount: number): Date {
-  const result = new Date(date)
-  result.setDate(result.getDate() + amount)
-  return result
-}
+// Dates are handled as local-time 'YYYY-MM-DD' keys; dayjs parses and formats them in local time
+export const KEY_FORMAT = 'YYYY-MM-DD'
 
 export function todayKey(): string {
-  return toKey(new Date())
+  return dayjs().format(KEY_FORMAT)
+}
+
+/** The key `amount` days after `key` (negative for before). */
+export function addDays(key: string, amount: number): string {
+  return dayjs(key).add(amount, 'day').format(KEY_FORMAT)
 }
 
 /** Whole days between two keys (a - b). */
 export function diffDays(a: string, b: string): number {
-  return Math.round((fromKey(a).getTime() - fromKey(b).getTime()) / 86_400_000)
+  return dayjs(a).diff(dayjs(b), 'day')
+}
+
+/** Day of the month, 1–31. */
+export function dayOfMonth(key: string): number {
+  return dayjs(key).date()
+}
+
+/** Monday-first weekday index, 0 (Mon) – 6 (Sun). */
+export function weekdayIndex(key: string): number {
+  return (dayjs(key).day() + 6) % 7
 }
 
 /** 'Today', 'Yesterday', or the weekday name. */
@@ -32,25 +32,25 @@ export function relativeDayLabel(key: string, today: string = todayKey()): strin
   const diff = diffDays(today, key)
   if (diff === 0) return 'Today'
   if (diff === 1) return 'Yesterday'
-  return fromKey(key).toLocaleDateString('en-GB', { weekday: 'long' })
+  return dayjs(key).format('dddd')
 }
 
+/** e.g. '3 October 2026'. */
 export function formatLongDate(key: string): string {
-  return fromKey(key).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
+  return dayjs(key).format('D MMMM YYYY')
 }
 
+/** e.g. '3 Oct'. */
 export function formatShortDate(key: string): string {
-  return fromKey(key).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+  return dayjs(key).format('D MMM')
 }
 
+/** e.g. 'Sat'. */
 export function weekdayShort(key: string): string {
-  return fromKey(key).toLocaleDateString('en-GB', { weekday: 'short' })
+  return dayjs(key).format('ddd')
 }
 
+/** e.g. 'October 2026'. */
 export function monthYear(key: string): string {
-  return fromKey(key).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
+  return dayjs(key).format('MMMM YYYY')
 }
