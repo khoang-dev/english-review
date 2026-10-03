@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '@/views/HomeView.vue'
 import ReviewView from '@/views/ReviewView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', redirect: { name: 'review' } },
+    // 30-day plan dashboard
+    { path: '/', name: 'home', component: HomeView },
     {
       // Daily review carousel; without a date it opens on today
       path: '/review/:date(\\d{4}-\\d{2}-\\d{2})?',

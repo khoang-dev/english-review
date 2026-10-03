@@ -1,16 +1,40 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { CheckOutlined, CloseOutlined, ThunderboltFilled } from '@ant-design/icons-vue'
-import { lessonMistakes } from '@/data/lessons'
+import {
+  CheckOutlined,
+  CloseOutlined,
+  EditOutlined,
+  FormOutlined,
+  QuestionCircleOutlined,
+  RetweetOutlined,
+} from '@ant-design/icons-vue'
+import type { Component } from 'vue'
+import { firstLessonDay, lessonMistakes } from '@/data/lessons'
+import { getExercises } from '@/data/exercises'
 import { formatLongDate, relativeDayLabel } from '@/utils/date'
+import { PLAN_LENGTH, planDayNumber } from '@/utils/plan'
 import CategoryPill from './CategoryPill.vue'
+import KnowledgeSummary from './KnowledgeSummary.vue'
 import SentenceCard from './SentenceCard.vue'
 
 import type { Lesson } from '@/types/lesson'
+import type { ExerciseSet, PracticeTab } from '@/types/exercise'
 
 const props = defineProps<{ lesson: Lesson }>()
 
-defineEmits<{ practice: [] }>()
+const emit = defineEmits<{ practice: [set: ExerciseSet, tab?: PracticeTab] }>()
+
+const exercises = computed(() => getExercises(props.lesson))
+const dayNumber = computed(() =>
+  planDayNumber(firstLessonDay() ?? props.lesson.date, props.lesson.date),
+)
+
+const modes: { tab: PracticeTab; label: string; icon: Component }[] = [
+  { tab: 'flashcards', label: 'Flashcards', icon: RetweetOutlined },
+  { tab: 'quiz', label: 'Quiz', icon: QuestionCircleOutlined },
+  { tab: 'blanks', label: 'Fill blanks', icon: FormOutlined },
+  { tab: 'rewrite', label: 'Rewrite', icon: EditOutlined },
+]
 
 const mistakeCount = computed(() => lessonMistakes(props.lesson).length)
 
@@ -44,7 +68,10 @@ const stats = computed<{ label: string; value: number; suffix?: string }[]>(() =
       class="flex flex-col gap-4 rounded-3xl bg-linear-to-br from-indigo-600 to-violet-600 p-5 text-white shadow-lg shadow-indigo-600/20 sm:p-6"
     >
       <div>
-        <p class="text-sm font-medium text-indigo-100">
+        <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-indigo-100">
+          <span class="rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold text-white">
+            Day {{ dayNumber }}/{{ PLAN_LENGTH }}
+          </span>
           {{ relativeDayLabel(lesson.date) }} · {{ formatLongDate(lesson.date) }}
         </p>
         <h2 class="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">{{ lesson.title }}</h2>
@@ -66,13 +93,25 @@ const stats = computed<{ label: string; value: number; suffix?: string }[]>(() =
         </div>
       </dl>
 
-      <button
-        type="button"
-        class="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-white px-5 font-semibold text-indigo-700 shadow-sm transition-colors hover:bg-indigo-50 active:bg-indigo-100 sm:self-start"
-        @click="$emit('practice')"
-      >
-        <ThunderboltFilled /> Practice these sentences
-      </button>
+      <div class="flex flex-col gap-2">
+        <p class="text-xs font-semibold tracking-wider text-indigo-100 uppercase">Practise</p>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <button
+            v-for="mode in modes"
+            :key="mode.tab"
+            type="button"
+            :disabled="!exercises[mode.tab].length"
+            class="flex min-h-12 items-center gap-2 rounded-2xl bg-white px-3 text-left text-sm font-semibold text-indigo-700 shadow-sm transition-colors hover:bg-indigo-50 active:bg-indigo-100 disabled:opacity-50"
+            @click="emit('practice', exercises, mode.tab)"
+          >
+            <component :is="mode.icon" class="text-base" />
+            <span class="min-w-0 flex-1 truncate">{{ mode.label }}</span>
+            <span class="text-xs font-medium text-indigo-400">{{
+              exercises[mode.tab].length
+            }}</span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <p
@@ -112,6 +151,13 @@ const stats = computed<{ label: string; value: number; suffix?: string }[]>(() =
         </div>
       </div>
     </section>
+
+    <KnowledgeSummary
+      :lessons="[lesson]"
+      title="Review checklist"
+      compact
+      @practice="emit('practice', $event)"
+    />
 
     <!-- Sentences -->
     <section class="flex flex-col gap-3">

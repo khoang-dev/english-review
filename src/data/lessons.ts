@@ -202,6 +202,89 @@ export const lessons: Lesson[] = [
         fixes: ['causes young people to lead an unhealthy lifestyle', 'skipping'],
       },
     ],
+    exercises: {
+      flashcards: [
+        {
+          front: 'Động từ đi với "lifestyle"?',
+          back: 'lead / live / adopt a … lifestyle',
+          note: 'Tránh "have a lifestyle". Ví dụ: lead an unhealthy lifestyle.',
+          category: 'collocations',
+        },
+        {
+          front: 'người nghèo',
+          back: 'poor people / the poor',
+          note: '"persons" chỉ dùng trong văn bản pháp lý.',
+          category: 'word-choice',
+        },
+        {
+          front: 'bỏ bữa sáng',
+          back: 'skip breakfast',
+          note: 'Tự nhiên hơn "not eat breakfast".',
+          category: 'collocations',
+        },
+        {
+          front: 'gây căng thẳng cho học sinh',
+          back: 'cause stress for students / make students stressed',
+          category: 'collocations',
+        },
+      ],
+      quiz: [
+        {
+          prompt: 'Poor people often face ___ high risk of serious diseases.',
+          options: ['a', 'an', 'the', '(no article)'],
+          answer: 0,
+          explanation:
+            '"risk" là danh từ đếm được số ít, "high" bắt đầu bằng phụ âm → "a high risk".',
+          category: 'articles',
+        },
+        {
+          prompt: 'Using food delivery apps is ___ and more convenient.',
+          options: ['more fast', 'faster', 'more faster', 'fastly'],
+          answer: 1,
+          explanation: '"fast" là tính từ một âm tiết → so sánh hơn là "faster".',
+          category: 'comparatives',
+        },
+        {
+          prompt: 'Working overtime causes young people to ___ an unhealthy lifestyle.',
+          options: ['have', 'make', 'lead', 'do'],
+          answer: 2,
+          explanation: 'Collocation: lead / live / adopt a lifestyle.',
+          category: 'collocations',
+        },
+        {
+          prompt: 'Which phrase means "sau một ngày làm việc vất vả"?',
+          options: [
+            'after a hard-working day',
+            'after working hard all day',
+            'after a hardly working day',
+            'after a day hard-working',
+          ],
+          answer: 1,
+          explanation:
+            '"hard-working" tả người siêng năng; muốn nói làm việc vất vả dùng "work hard".',
+          category: 'word-choice',
+        },
+        {
+          prompt: 'Office workers often like drinking milk tea and eating too much ___.',
+          options: ['fast foods', 'a fast food', 'fast food', 'the fast foods'],
+          answer: 2,
+          explanation: '"fast food" là danh từ không đếm được → "too much fast food".',
+          category: 'plurals',
+        },
+      ],
+      blanks: [
+        {
+          text: 'Staying up late can lead to [serious health problems|health problems].',
+          hint: 'Thức khuya có thể dẫn đến các vấn đề sức khỏe nghiêm trọng.',
+          category: 'plurals',
+        },
+        {
+          text: 'Many young people [lead|live] [an] unhealthy lifestyle.',
+          hint: 'Nhiều người trẻ có lối sống không lành mạnh.',
+          category: 'articles',
+        },
+      ],
+    },
   },
 ]
 
@@ -219,4 +302,9 @@ export function lessonMistakes(lesson: Lesson): Mistake[] {
         : [],
     ),
   )
+}
+
+/** Day 1 of the 30-day plan: the first lesson's day. */
+export function firstLessonDay(): string | undefined {
+  return lessons.map((lesson) => lesson.date).sort()[0]
 }

@@ -34,9 +34,34 @@ npm run format     # prettier --write src/
   `<a-*>` Ant Design components); it updates when the dev server runs — commit it.
 - Node 22.18+ is required (the responsive check script runs `.ts` directly with Node).
 
+## 30-day plan
+
+The app opens on the 30-day dashboard (`/`). Day 1 is the first lesson's day; after 30 days a new
+round starts. It shows today's day number, streak, a 30-day grid (days with new writing / days
+practised) and **What to review** (`KnowledgeSummary`): mastery per mistake type, the key rules
+behind weak types, phrases not mastered yet, and a button to practise only the weak items.
+
+## Practice
+
+Every lesson has four exercise types (`src/components/practice/`), opened from the lesson hero:
+
+- **Flashcards** — tap to flip, then "Still learning" / "Got it"
+- **Quiz** — a question with 4 answers
+- **Fill in the blanks** — type the missing words of the corrected sentence
+- **Rewrite** — rewrite the whole sentence correctly
+
+Exercises are generated from each lesson (`src/data/exercises.ts`): flashcards from the rules'
+wrong → right examples, blanks from the `fixes` of each corrected sentence, and "Which sentence
+is correct?" questions from sentences whose `highlights` and `fixes` line up one-to-one. Add
+hand-written ones with the optional `exercises` field on a lesson (types in
+`src/types/exercise.ts`); blanks use square brackets, `'face [a] high risk of [diseases|illnesses]'`.
+
+Results are kept in `localStorage` (`src/composables/useProgress.ts`) and feed the review summary
+and the 30-day grid.
+
 ## Daily review
 
-The app opens on today's review (`/review`). Swipe left (or use the date strip / ← → keys) to go
+`/review` opens on today's lesson. Swipe left (or use the date strip / ← → keys) to go
 back through previous days; `/review/YYYY-MM-DD` links to a specific day. `/mistakes` groups every
 mistake by type across all days.
 
@@ -48,7 +73,7 @@ belongs to and it appears on that day.
 With `npm run dev` running:
 
 ```sh
-npm run check:responsive -- http://localhost:5173 /review /mistakes
+npm run check:responsive -- http://localhost:5173 / /review /mistakes
 ```
 
 Screenshots at 360/390/768/1280px go to `.responsive-shots/`. Locally, run
