@@ -9,9 +9,9 @@ import {
 } from '@ant-design/icons-vue'
 import { courseProgress, courses, nextPart, overallProgress, snapshots } from '@/data/courses'
 import { formatLongDate, formatShortDate, todayKey } from '@/utils/date'
-import { paceSummary, withToday } from '@/utils/pace'
-import { PLAN_END, PLAN_START } from '@/utils/plan'
-import ProgressChart from '@/components/ProgressChart.vue'
+import { dailyChanges, paceSummary, withToday } from '@/utils/pace'
+import { PLAN_END } from '@/utils/plan'
+import DailyBarChart from '@/components/DailyBarChart.vue'
 
 /** Completed course parts out of all parts across ROOT, TRUNK and BULK, with pace to the deadline. */
 const today = todayKey()
@@ -19,10 +19,26 @@ const overall = overallProgress()
 const next = nextPart()
 const rows = courses.map((course) => ({ name: course.name, ...courseProgress(course) }))
 
+const one = (n: number) => (Math.round(n * 10) / 10).toString()
+
 // The log plus today's live count from courses.json
 const series = withToday(snapshots, { date: today, completed: overall.done })
 const pace = paceSummary(series, overall.total, PLAN_END, today)
-const chartStart = series[0] && series[0].date < PLAN_START ? series[0].date : PLAN_START
+const days = dailyChanges(series, today)
+const changes = days.filter((day) => day.parts !== undefined)
+
+const partsPoints = changes.map((day) => ({
+  date: day.date,
+  value: day.parts,
+  detail: `${day.completed} of ${overall.total} completed`,
+}))
+const percentPoints = changes.map((day) => ({
+  date: day.date,
+  value: day.percent,
+  detail: `${day.completed - (day.parts ?? 0)} → ${day.completed} parts`,
+}))
+const formatParts = (n: number) => `${n > 0 ? '+' : ''}${one(n)}`
+const formatPercent = (n: number) => `${n > 0 ? '+' : ''}${one(n)}%`
 
 type Mode = 'current' | 'chart'
 const modes: { value: Mode; label: string }[] = [
@@ -46,8 +62,6 @@ function setMode(value: Mode) {
     // Storage unavailable: the choice just isn't remembered
   }
 }
-
-const one = (n: number) => (Math.round(n * 10) / 10).toString()
 
 const statusView = computed(() => {
   const behind = Math.round(-pace.gap)
@@ -176,13 +190,63 @@ const paceStats = [
       </p>
     </template>
 
-    <ProgressChart
-      v-else
-      :series="series"
-      :total="overall.total"
-      :start="chartStart"
-      :deadline="PLAN_END"
-      :today="today"
-    />
+    <div v-else class="flex flex-col gap-5">
+      <div
+        v-if="!changes.length"
+        class="rounded-2xl bg-slate-50 px-3 py-6 text-center text-sm text-slate-500"
+      >
+        Day-by-day charts start once there are 2 days of snapshots. Run
+        <code class="text-xs">npm run snapshot</code> each day.
+      </div>
+      <template v-else>
+        <DailyBarChart
+          title="Parts completed per day"
+          :points="partsPoints"
+          :format="formatParts"
+          :reference="
+            pace.remaining
+              ? { value: pace.requiredPerDay, label: `Need ${one(pace.requiredPerDay)}/day` }
+              : undefined
+          "
+        />
+        <DailyBarChart
+          title="% increase vs. previous day"
+          :points="percentPoints"
+          :format="formatPercent"
+        />
+      </template>
+
+      <details class="rounded-2xl bg-slate-50 px-3 py-2 text-sm">
+        <summary class="flex min-h-9 cursor-pointer items-center font-semibold text-slate-700">
+          Daily log ({{ days.length }} {{ days.length === 1 ? 'day' : 'days' }})
+        </summary>
+        <table class="mt-1 w-full text-left text-xs">
+          <thead class="text-slate-500">
+            <tr>
+              <th class="py-1 font-medium">Date</th>
+              <th class="py-1 text-right font-medium">Completed</th>
+              <th class="py-1 text-right font-medium">Parts</th>
+              <th class="py-1 text-right font-medium">Increase</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-700">
+            <tr
+              v-for="day in [...days].reverse()"
+              :key="day.date"
+              class="border-t border-slate-200"
+            >
+              <td class="py-1.5">{{ formatShortDate(day.date) }}</td>
+              <td class="py-1.5 text-right font-semibold">{{ day.completed }}</td>
+              <td class="py-1.5 text-right">
+                {{ day.parts === undefined ? '—' : formatParts(day.parts) }}
+              </td>
+              <td class="py-1.5 text-right">
+                {{ day.percent === undefined ? '—' : formatPercent(day.percent) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
   </section>
 </template>

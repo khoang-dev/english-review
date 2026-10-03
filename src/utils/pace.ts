@@ -87,3 +87,30 @@ export function paceSummary(
     willMiss,
   }
 }
+
+export interface DailyChange {
+  date: string
+  /** Completed total at the end of the day (carried forward on days without a snapshot). */
+  completed: number
+  /** Parts completed that day; undefined on the first logged day. */
+  parts?: number
+  /** Increase of the completed total versus the previous day, in %; undefined when not computable. */
+  percent?: number
+}
+
+/** One entry per calendar day from the first snapshot to `today`. */
+export function dailyChanges(series: Snapshot[], today: string): DailyChange[] {
+  const first = series[0]
+  if (!first) return []
+  const byDate = new Map(series.map((s) => [s.date, s.completed]))
+  const days: DailyChange[] = []
+  let previous: number | undefined
+  for (let date = first.date; date <= today; date = addDays(date, 1)) {
+    const completed = byDate.get(date) ?? previous ?? first.completed
+    const parts = previous === undefined ? undefined : completed - previous
+    const percent = parts === undefined || !previous ? undefined : (parts / previous) * 100
+    days.push({ date, completed, parts, percent })
+    previous = completed
+  }
+  return days
+}

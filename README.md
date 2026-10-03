@@ -48,11 +48,12 @@ phrases not mastered yet, and a button to practise only the weak items.
 Platform parts and 4 Doc parts. Set `"completed": true` on a part when it's done. The **Course
 progress** card shows completed / all parts, the parts per day needed to finish by 31 Dec, and
 whether you're ahead of, on, or behind the target line. Toggle **Current** (per-course bars, next
-part) or **Chart** (completed vs. target over time, with a daily log).
+part) or **Chart**: parts completed per day (against the parts/day needed), the % increase of the
+completed total vs. the previous day, and a daily log.
 
 Daily routine: update `courses.json`, then run `npm run snapshot` to record today's count in
-`src/data/progress-log.json` and commit both. The chart is drawn from those daily snapshots (today
-always uses the live count).
+`src/data/progress-log.json` and commit both. The charts are drawn from those daily snapshots (today
+always uses the live count; a day without a snapshot counts as 0 parts).
 
 ## Practice
 
