@@ -22,7 +22,6 @@ npm run type-check # vue-tsc only
 npm run preview    # preview the build
 npm run lint       # eslint --fix
 npm run format     # prettier --write src/
-npm run snapshot   # log today's completed course parts to progress-log.json
 ```
 
 ## TypeScript
@@ -51,9 +50,9 @@ whether you're ahead of, on, or behind the target line. Toggle **Current** (per-
 part) or **Chart**: parts completed per day (against the parts/day needed), the % increase of the
 completed total vs. the previous day, and a daily log.
 
-Daily routine: update `courses.json`, then run `npm run snapshot` to record today's count in
-`src/data/progress-log.json` and commit both. The charts are drawn from those daily snapshots (today
-always uses the live count; a day without a snapshot counts as 0 parts).
+Today's count always comes live from `courses.json`. `src/data/progress-log.json` stores the
+completed totals of previous days (`{ "date": "2026-10-02", "completed": 45 }`); add the previous
+day's total there to keep the charts going. A day missing from the log counts as 0 parts.
 
 ## Practice
 

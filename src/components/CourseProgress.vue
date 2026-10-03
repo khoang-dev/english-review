@@ -195,8 +195,8 @@ const paceStats = [
         v-if="!changes.length"
         class="rounded-2xl bg-slate-50 px-3 py-6 text-center text-sm text-slate-500"
       >
-        Day-by-day charts start once there are 2 days of snapshots. Run
-        <code class="text-xs">npm run snapshot</code> each day.
+        Day-by-day charts start once previous days are logged in
+        <code class="text-xs">src/data/progress-log.json</code>.
       </div>
       <template v-else>
         <DailyBarChart

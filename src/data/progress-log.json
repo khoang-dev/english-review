@@ -1,8 +1,6 @@
 {
   "snapshots": [
-    {
-      "date": "2026-10-03",
-      "completed": 45
-    }
+    { "date": "2026-10-01", "completed": 45 },
+    { "date": "2026-10-02", "completed": 45 }
   ]
 }
