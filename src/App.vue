@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { BookOutlined, CalendarOutlined, FireOutlined } from '@ant-design/icons-vue'
+import { BookOutlined, CalendarOutlined, FireOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 
 const navItems = [
   { name: 'home', label: 'Plan', icon: FireOutlined },
   { name: 'review', label: 'Daily review', icon: CalendarOutlined },
   { name: 'mistakes', label: 'Mistakes', icon: BookOutlined },
 ]
+
+/** Reload the current URL so the latest deployed code is loaded. */
+function reload() {
+  window.location.reload()
+}
 </script>
 
 <template>
@@ -24,29 +29,41 @@ const navItems = [
             English Review
           </RouterLink>
 
-          <nav class="hidden items-center gap-1 md:flex">
-            <RouterLink
-              v-for="item in navItems"
-              :key="item.name"
-              v-slot="{ href, navigate, isActive }"
-              :to="{ name: item.name }"
-              custom
-            >
-              <a
-                :href="href"
-                :class="[
-                  'flex h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors',
-                  isActive
-                    ? 'bg-indigo-50 text-indigo-700'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
-                ]"
-                @click="navigate"
+          <div class="flex items-center gap-1">
+            <nav class="hidden items-center gap-1 md:flex">
+              <RouterLink
+                v-for="item in navItems"
+                :key="item.name"
+                v-slot="{ href, navigate, isActive }"
+                :to="{ name: item.name }"
+                custom
               >
-                <component :is="item.icon" />
-                {{ item.label }}
-              </a>
-            </RouterLink>
-          </nav>
+                <a
+                  :href="href"
+                  :class="[
+                    'flex h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors',
+                    isActive
+                      ? 'bg-indigo-50 text-indigo-700'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
+                  ]"
+                  @click="navigate"
+                >
+                  <component :is="item.icon" />
+                  {{ item.label }}
+                </a>
+              </RouterLink>
+            </nav>
+
+            <button
+              type="button"
+              aria-label="Reload to get the latest version"
+              title="Reload"
+              class="grid size-11 place-items-center rounded-lg text-lg text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 active:bg-slate-200"
+              @click="reload"
+            >
+              <ReloadOutlined />
+            </button>
+          </div>
         </div>
       </header>
 
