@@ -195,11 +195,14 @@ const phrases = computed(() => toReview.value.flashcards.slice(0, props.compact 
       type="primary"
       size="large"
       block
+      class="flex! items-center! justify-center! gap-2!"
       @click="$emit('practice', toReview)"
     >
-      <template #icon><FireFilled /></template>
-      Practise {{ toReviewCount }} weak {{ toReviewCount === 1 ? 'item' : 'items' }}
-      <ArrowRightOutlined />
+      <FireFilled class="flex!" />
+      <span class="ms-0!"
+        >Practise {{ toReviewCount }} weak {{ toReviewCount === 1 ? 'item' : 'items' }}</span
+      >
+      <ArrowRightOutlined class="ms-0! flex!" />
     </a-button>
   </section>
 </template>
