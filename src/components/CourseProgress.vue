@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons-vue'
 import { courseProgress, courses, nextPart, overallProgress, snapshots } from '@/data/courses'
 import { formatLongDate, formatShortDate, todayKey } from '@/utils/date'
-import { dailyChanges, paceSummary, withToday } from '@/utils/pace'
+import { dailyChanges, fillGaps, paceSummary, withToday } from '@/utils/pace'
 import { PLAN_END } from '@/utils/plan'
 import DailyBarChart from '@/components/DailyBarChart.vue'
 import { useMediaQuery } from '@/composables/useMediaQuery'
@@ -22,8 +22,8 @@ const rows = courses.map((course) => ({ name: course.name, ...courseProgress(cou
 
 const one = (n: number) => (Math.round(n * 10) / 10).toString()
 
-// The log plus today's live count from courses.json
-const series = withToday(snapshots, { date: today, completed: overall.done })
+// The log plus today's live count from courses.json; days missing from the log reuse the previous day
+const series = fillGaps(withToday(snapshots, { date: today, completed: overall.done }), today)
 const pace = paceSummary(series, overall.total, PLAN_END, today)
 const days = dailyChanges(series, today)
 const changes = days.filter((day) => day.parts !== undefined)
