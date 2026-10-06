@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { BookOutlined, CalendarOutlined, FireOutlined } from '@ant-design/icons-vue'
+import { BookOutlined, CalendarOutlined, FireOutlined, GlobalOutlined } from '@ant-design/icons-vue'
 
 const navItems = [
   { name: 'home', label: 'Plan', icon: FireOutlined },
   { name: 'review', label: 'Daily review', icon: CalendarOutlined },
   { name: 'mistakes', label: 'Mistakes', icon: BookOutlined },
+  { name: 'youpass', label: 'YouPass', icon: GlobalOutlined },
 ]
 </script>
 
@@ -58,7 +59,7 @@ const navItems = [
       <nav
         class="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
       >
-        <div class="grid grid-cols-3">
+        <div class="grid grid-cols-4">
           <RouterLink
             v-for="item in navItems"
             :key="item.name"

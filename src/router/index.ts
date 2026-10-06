@@ -19,6 +19,12 @@ const router = createRouter({
       component: () => import('@/views/MistakesView.vue'),
     },
     {
+      // youpass.vn embedded in an iframe
+      path: '/youpass',
+      name: 'youpass',
+      component: () => import('@/views/YouPassView.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: () => import('@/views/NotFoundView.vue'),
