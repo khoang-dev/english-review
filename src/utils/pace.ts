@@ -44,6 +44,23 @@ export function withToday(snapshots: Snapshot[], today: Snapshot): Snapshot[] {
   )
 }
 
+/**
+ * One snapshot per calendar day from the first logged day to `today`: a day missing from the
+ * log reuses the previous day's completed count.
+ */
+export function fillGaps(series: Snapshot[], today: string): Snapshot[] {
+  const first = series[0]
+  if (!first) return []
+  const byDate = new Map(series.map((s) => [s.date, s.completed]))
+  const filled: Snapshot[] = []
+  let previous = first.completed
+  for (let date = first.date; date <= today; date = addDays(date, 1)) {
+    previous = byDate.get(date) ?? previous
+    filled.push({ date, completed: previous })
+  }
+  return filled
+}
+
 export function paceSummary(
   series: Snapshot[],
   total: number,
@@ -90,7 +107,7 @@ export function paceSummary(
 
 export interface DailyChange {
   date: string
-  /** Completed total at the end of the day (carried forward on days without a snapshot). */
+  /** Completed total at the end of the day (the previous day's on days without a snapshot). */
   completed: number
   /** Parts completed that day; undefined on the first logged day. */
   parts?: number
@@ -98,19 +115,13 @@ export interface DailyChange {
   percent?: number
 }
 
-/** One entry per calendar day from the first snapshot to `today`. */
+/** One entry per calendar day from the first snapshot to `today` (gaps reuse the previous day). */
 export function dailyChanges(series: Snapshot[], today: string): DailyChange[] {
-  const first = series[0]
-  if (!first) return []
-  const byDate = new Map(series.map((s) => [s.date, s.completed]))
-  const days: DailyChange[] = []
   let previous: number | undefined
-  for (let date = first.date; date <= today; date = addDays(date, 1)) {
-    const completed = byDate.get(date) ?? previous ?? first.completed
+  return fillGaps(series, today).map(({ date, completed }) => {
     const parts = previous === undefined ? undefined : completed - previous
     const percent = parts === undefined || !previous ? undefined : (parts / previous) * 100
-    days.push({ date, completed, parts, percent })
     previous = completed
-  }
-  return days
+    return { date, completed, parts, percent }
+  })
 }
