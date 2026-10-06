@@ -229,19 +229,19 @@
             },
             {
               "name": "Reading 1",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Reading 2",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Reading 3",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Reading 4",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Vocab 1",
@@ -275,7 +275,7 @@
             },
             {
               "name": "Reading",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Listening",
