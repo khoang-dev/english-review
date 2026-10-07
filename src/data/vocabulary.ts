@@ -165,6 +165,16 @@ export const vocabulary: VocabDay[] = [
         example: 'She reads her horoscope in the newspaper every morning.',
         note: 'Liên quan: astrology (n): chiêm tinh học; star sign (n): cung hoàng đạo.',
       },
+      {
+        word: 'optimistic',
+        focus: 'ic',
+        ipa: 'ˌɒptɪˈmɪstɪk',
+        pos: 'adj',
+        meaning: 'lạc quan',
+        family: [{ word: 'optimism', pos: 'n', meaning: 'sự lạc quan' }],
+        example: 'She is optimistic about passing the exam.',
+        note: 'Be optimistic about sth. Trái nghĩa: pessimistic (bi quan).',
+      },
     ],
   },
 ]
