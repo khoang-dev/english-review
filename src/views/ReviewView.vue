@@ -2,13 +2,14 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { lessons, getLessonsByDate } from '@/data/lessons'
+import { vocabulary, getVocabularyByDate } from '@/data/vocabulary'
 import { addDays, diffDays, formatShortDate, todayKey } from '@/utils/date'
 import DateStrip from '@/components/DateStrip.vue'
 import DayCarousel from '@/components/DayCarousel.vue'
 import DayEmpty from '@/components/DayEmpty.vue'
 import LessonReview from '@/components/LessonReview.vue'
+import VocabularyReview from '@/components/VocabularyReview.vue'
 import PracticeDrawer from '@/components/practice/PracticeDrawer.vue'
-import type { Lesson } from '@/types/lesson'
 import type { ExerciseSet, PracticeTab } from '@/types/exercise'
 
 // Always show at least a month of days in the strip
@@ -18,7 +19,10 @@ const route = useRoute()
 const router = useRouter()
 
 const today = todayKey()
-const reviewDays = new Set(lessons.map((lesson) => lesson.date))
+const reviewDays = new Set([
+  ...lessons.map((lesson) => lesson.date),
+  ...vocabulary.map((day) => day.date),
+])
 
 // Every day from the newest (today, or a later lesson) back to the oldest lesson — newest first
 const days = computed(() => {
@@ -88,8 +92,8 @@ const drawer = ref<{
   tab?: PracticeTab
 }>({ open: false, title: '', set: null })
 
-function practice(lesson: Lesson, set: ExerciseSet, tab?: PracticeTab) {
-  drawer.value = { open: true, title: `Practice · ${formatShortDate(lesson.date)}`, set, tab }
+function practice(date: string, set: ExerciseSet, tab?: PracticeTab, kind = 'Practice') {
+  drawer.value = { open: true, title: `${kind} · ${formatShortDate(date)}`, set, tab }
 }
 </script>
 
@@ -115,7 +119,12 @@ function practice(lesson: Lesson, set: ExerciseSet, tab?: PracticeTab) {
               v-for="lesson in getLessonsByDate(day)"
               :key="lesson.id"
               :lesson="lesson"
-              @practice="(set, tab) => practice(lesson, set, tab)"
+              @practice="(set, tab) => practice(lesson.date, set, tab)"
+            />
+            <VocabularyReview
+              v-if="getVocabularyByDate(day)"
+              :day="getVocabularyByDate(day)!"
+              @practice="(set, tab) => practice(day, set, tab, 'Vocabulary')"
             />
             <DayEmpty
               v-if="!reviewDays.has(day)"

@@ -81,6 +81,11 @@ mistake by type across all days.
 Writing corrections live in `src/data/lessons.ts` (typed by `Lesson` in `src/types/lesson.ts`). Add an object to `lessons` with the `date` it
 belongs to and it appears on that day.
 
+New words live in `src/data/vocabulary.ts` (typed by `VocabDay` in `src/types/vocabulary.ts`): add
+a `{ date, title, words }` object and the words show on that day under the lesson, with IPA, the
+part to remember (`focus`, e.g. the `UN` in `unauthorised`), the word family, an example, a
+**Hide meanings** self-test, and Flashcards / Quiz practice.
+
 ## Checking mobile layouts
 
 With `npm run dev` running:
