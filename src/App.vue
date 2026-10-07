@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import {
-  BookOutlined,
-  CalendarOutlined,
-  FireOutlined,
-  GlobalOutlined,
-  ReloadOutlined,
-} from '@ant-design/icons-vue'
+import { BookOutlined, CalendarOutlined, FireOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { tabRoute, useTab } from '@/router/tabs'
 import type { Tab } from '@/router/tabs'
 
@@ -14,7 +8,6 @@ const navItems: { tab: Tab; label: string; icon: Component }[] = [
   { tab: 'home', label: 'Plan', icon: FireOutlined },
   { tab: 'review', label: 'Daily review', icon: CalendarOutlined },
   { tab: 'mistakes', label: 'Mistakes', icon: BookOutlined },
-  { tab: 'youpass', label: 'YouPass', icon: GlobalOutlined },
 ]
 
 // RouterLink's isActive ignores the query, so compare the tab ourselves
@@ -91,7 +84,7 @@ function reload() {
       <nav
         class="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
       >
-        <div class="grid grid-cols-4">
+        <div class="grid grid-cols-3">
           <RouterLink
             v-for="item in navItems"
             :key="item.tab"

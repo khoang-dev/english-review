@@ -75,7 +75,7 @@ and the 30-day grid.
 ## Daily review
 
 Pages are tabs of the root URL, picked by the `tab` query (`src/router/tabs.ts`): `/` is the plan,
-`/?tab=review`, `/?tab=mistakes`, `/?tab=youpass`. Old path URLs (`/review/…`, `/mistakes`)
+`/?tab=review`, `/?tab=mistakes`, and `/?tab=youpass` (not in the nav). Old path URLs (`/review/…`, `/mistakes`)
 redirect to them.
 
 `/?tab=review` opens on today's lesson. Swipe left (or use the date strip / ← → keys) to go
