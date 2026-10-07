@@ -7,6 +7,7 @@ import {
   ReadOutlined,
   ThunderboltFilled,
 } from '@ant-design/icons-vue'
+import { reviewRoute } from '@/router/tabs'
 import { getLessonsByDate, lessons } from '@/data/lessons'
 import { getExercises, mergeExercises } from '@/data/exercises'
 import { useProgress } from '@/composables/useProgress'
@@ -123,10 +124,7 @@ const allExercises = computed(() => mergeExercises(lessons.map(getExercises)))
           </div>
           <div class="grid gap-2 sm:grid-cols-2">
             <RouterLink
-              :to="{
-                name: 'review',
-                params: featured.date === today ? {} : { date: featured.date },
-              }"
+              :to="reviewRoute(featured.date === today ? undefined : featured.date)"
               class="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-slate-100 px-4 font-semibold text-slate-800 transition-colors hover:bg-slate-200 active:bg-slate-300"
             >
               <BookOutlined /> Read corrections

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { CheckOutlined, CloseOutlined, RightOutlined } from '@ant-design/icons-vue'
 import { categories, lessonMistakes, lessons } from '@/data/lessons'
 import { formatShortDate, relativeDayLabel } from '@/utils/date'
+import { reviewRoute } from '@/router/tabs'
 import CategoryPill from '@/components/CategoryPill.vue'
 import type { CategoryKey, FocusPoint, Mistake } from '@/types/lesson'
 
@@ -113,7 +114,7 @@ const filterClass = (active: boolean) =>
       >
         <li v-for="(mistake, i) in group.mistakes" :key="i">
           <RouterLink
-            :to="{ name: 'review', params: { date: mistake.lesson.date } }"
+            :to="reviewRoute(mistake.lesson.date)"
             class="flex items-center gap-3 p-4 transition-colors hover:bg-slate-50"
           >
             <div class="flex min-w-0 flex-1 flex-col gap-1">

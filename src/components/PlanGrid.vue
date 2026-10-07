@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { CheckOutlined } from '@ant-design/icons-vue'
 import { dayOfMonth, formatLongDate, todayKey, weekdayIndex } from '@/utils/date'
 import { PLAN_MONTHS } from '@/utils/plan'
+import { reviewRoute } from '@/router/tabs'
 
 /** Every day of the Oct–Dec plan as month calendars of tappable cells, coloured by what was done. */
 const props = defineProps<{
@@ -83,7 +84,7 @@ const legend: { state: CellState; label: string }[] = [
           </span>
           <RouterLink
             v-else
-            :to="{ name: 'review', params: cell.isToday ? {} : { date: cell.day } }"
+            :to="reviewRoute(cell.isToday ? undefined : cell.day)"
             :class="[
               'relative flex aspect-square flex-col items-center justify-center rounded-xl transition-colors',
               cellClass[cell.state],

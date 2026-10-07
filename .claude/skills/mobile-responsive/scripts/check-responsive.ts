@@ -2,7 +2,7 @@
 //
 // Usage (dev server must be running):
 //   npm run check:responsive -- [baseUrl] [path ...]
-//   npm run check:responsive -- http://localhost:5173 / /mistakes
+//   npm run check:responsive -- http://localhost:5173 / '/?tab=mistakes'
 //
 // Screenshots go to .responsive-shots/ (gitignored). Exits 1 if any page has horizontal
 // overflow or console errors.

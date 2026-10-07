@@ -74,8 +74,12 @@ and the 30-day grid.
 
 ## Daily review
 
-`/review` opens on today's lesson. Swipe left (or use the date strip / ← → keys) to go
-back through previous days; `/review/YYYY-MM-DD` links to a specific day. `/mistakes` groups every
+Pages are tabs of the root URL, picked by the `tab` query (`src/router/tabs.ts`): `/` is the plan,
+`/?tab=review`, `/?tab=mistakes`, `/?tab=youpass`. Old path URLs (`/review/…`, `/mistakes`)
+redirect to them.
+
+`/?tab=review` opens on today's lesson. Swipe left (or use the date strip / ← → keys) to go
+back through previous days; `/?tab=review&date=YYYY-MM-DD` links to a specific day. `/?tab=mistakes` groups every
 mistake by type across all days.
 
 Writing corrections live in `src/data/lessons.ts` (typed by `Lesson` in `src/types/lesson.ts`). Add an object to `lessons` with the `date` it
@@ -91,7 +95,7 @@ part to remember (`focus`, e.g. the `UN` in `unauthorised`), the word family, an
 With `npm run dev` running:
 
 ```sh
-npm run check:responsive -- http://localhost:5173 / /review /mistakes
+npm run check:responsive -- http://localhost:5173 / '/?tab=review' '/?tab=mistakes'
 ```
 
 Screenshots at 360/390/768/1280px go to `.responsive-shots/`. Locally, run

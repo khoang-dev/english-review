@@ -1,29 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import ReviewView from '@/views/ReviewView.vue'
+import TabView from '@/views/TabView.vue'
+import { reviewRoute, tabRoute } from './tabs'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // Oct–Dec 2026 plan dashboard
-    { path: '/', name: 'home', component: HomeView },
+    // Every page is a `?tab=` of the root (src/router/tabs.ts)
+    { path: '/', name: 'app', component: TabView },
+    // Old path URLs keep working
     {
-      // Daily review carousel; without a date it opens on today
       path: '/review/:date(\\d{4}-\\d{2}-\\d{2})?',
-      name: 'review',
-      component: ReviewView,
+      redirect: (to) =>
+        reviewRoute(typeof to.params.date === 'string' ? to.params.date : undefined),
     },
-    {
-      path: '/mistakes',
-      name: 'mistakes',
-      component: () => import('@/views/MistakesView.vue'),
-    },
-    {
-      // youpass.vn embedded in an iframe
-      path: '/youpass',
-      name: 'youpass',
-      component: () => import('@/views/YouPassView.vue'),
-    },
+    { path: '/mistakes', redirect: () => tabRoute('mistakes') },
+    { path: '/youpass', redirect: () => tabRoute('youpass') },
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
@@ -31,8 +22,8 @@ const router = createRouter({
     },
   ],
   scrollBehavior(to, from, savedPosition) {
-    // Swiping days only changes the date param — keep the scroll position then
-    if (to.name === from.name && to.name === 'review') return false
+    // Swiping days only changes the date query — keep the scroll position then
+    if (to.query.tab === 'review' && from.query.tab === 'review') return false
     return savedPosition ?? { top: 0 }
   },
 })

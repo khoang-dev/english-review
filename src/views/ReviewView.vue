@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { reviewRoute } from '@/router/tabs'
 import { lessons, getLessonsByDate } from '@/data/lessons'
 import { vocabulary, getVocabularyByDate } from '@/data/vocabulary'
 import { addDays, diffDays, formatShortDate, todayKey } from '@/utils/date'
@@ -34,11 +35,11 @@ const days = computed(() => {
 
 const activeDay = computed<string>({
   get: () => {
-    const date = route.params.date
+    const date = route.query.date
     return typeof date === 'string' && days.value.includes(date) ? date : today
   },
   set: (day) => {
-    router.replace({ name: 'review', params: day === today ? {} : { date: day } })
+    router.replace(reviewRoute(day === today ? undefined : day))
   },
 })
 

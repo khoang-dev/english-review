@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import {
   BookOutlined,
   CalendarOutlined,
@@ -6,13 +7,18 @@ import {
   GlobalOutlined,
   ReloadOutlined,
 } from '@ant-design/icons-vue'
+import { tabRoute, useTab } from '@/router/tabs'
+import type { Tab } from '@/router/tabs'
 
-const navItems = [
-  { name: 'home', label: 'Plan', icon: FireOutlined },
-  { name: 'review', label: 'Daily review', icon: CalendarOutlined },
-  { name: 'mistakes', label: 'Mistakes', icon: BookOutlined },
-  { name: 'youpass', label: 'YouPass', icon: GlobalOutlined },
+const navItems: { tab: Tab; label: string; icon: Component }[] = [
+  { tab: 'home', label: 'Plan', icon: FireOutlined },
+  { tab: 'review', label: 'Daily review', icon: CalendarOutlined },
+  { tab: 'mistakes', label: 'Mistakes', icon: BookOutlined },
+  { tab: 'youpass', label: 'YouPass', icon: GlobalOutlined },
 ]
+
+// RouterLink's isActive ignores the query, so compare the tab ourselves
+const currentTab = useTab()
 
 /** Reload the current URL so the latest deployed code is loaded. */
 function reload() {
@@ -27,7 +33,10 @@ function reload() {
     <div class="min-h-dvh bg-slate-50 text-slate-800">
       <header class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-md">
         <div class="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
-          <RouterLink to="/" class="flex h-11 items-center gap-2 font-semibold text-slate-900">
+          <RouterLink
+            :to="tabRoute('home')"
+            class="flex h-11 items-center gap-2 font-semibold text-slate-900"
+          >
             <span
               class="grid size-8 place-items-center rounded-lg bg-indigo-600 text-sm font-bold text-white"
             >
@@ -40,16 +49,16 @@ function reload() {
             <nav class="hidden items-center gap-1 md:flex">
               <RouterLink
                 v-for="item in navItems"
-                :key="item.name"
-                v-slot="{ href, navigate, isActive }"
-                :to="{ name: item.name }"
+                :key="item.tab"
+                v-slot="{ href, navigate }"
+                :to="tabRoute(item.tab)"
                 custom
               >
                 <a
                   :href="href"
                   :class="[
                     'flex h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors',
-                    isActive
+                    currentTab === item.tab
                       ? 'bg-indigo-50 text-indigo-700'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
                   ]"
@@ -85,16 +94,16 @@ function reload() {
         <div class="grid grid-cols-4">
           <RouterLink
             v-for="item in navItems"
-            :key="item.name"
-            v-slot="{ href, navigate, isActive }"
-            :to="{ name: item.name }"
+            :key="item.tab"
+            v-slot="{ href, navigate }"
+            :to="tabRoute(item.tab)"
             custom
           >
             <a
               :href="href"
               :class="[
                 'flex h-16 flex-col items-center justify-center gap-1 text-xs font-medium',
-                isActive ? 'text-indigo-600' : 'text-slate-500',
+                currentTab === item.tab ? 'text-indigo-600' : 'text-slate-500',
               ]"
               @click="navigate"
             >

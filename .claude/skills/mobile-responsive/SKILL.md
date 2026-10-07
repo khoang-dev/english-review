@@ -52,7 +52,7 @@ scale up. Styling itself follows the `tailwind-styling` skill (Tailwind classes,
 2. Run the check for every page you touched:
 
    ```sh
-   npm run check:responsive -- http://localhost:5173 /review /mistakes
+   npm run check:responsive -- http://localhost:5173 '/?tab=review' '/?tab=mistakes'
    ```
 
    It loads each path at 360, 390, 768 and 1280px, saves full-page screenshots to
