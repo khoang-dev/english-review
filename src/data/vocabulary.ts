@@ -157,6 +157,14 @@ export const vocabulary: VocabDay[] = [
         family: [{ word: 'observe sth', pos: 'v', meaning: 'tuân thủ / cử hành' }],
         note: 'Religious observance: ngày lễ tôn giáo (nghỉ học vì lý do này được cho phép).',
       },
+      {
+        word: 'horoscope',
+        ipa: 'ˈhɒrəskəʊp',
+        pos: 'n',
+        meaning: 'tử vi / lá số tử vi (dự đoán theo cung hoàng đạo)',
+        example: 'She reads her horoscope in the newspaper every morning.',
+        note: 'Liên quan: astrology (n): chiêm tinh học; star sign (n): cung hoàng đạo.',
+      },
     ],
   },
 ]
