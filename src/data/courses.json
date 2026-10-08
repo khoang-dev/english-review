@@ -245,7 +245,7 @@
             },
             {
               "name": "Vocab 1",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Vocab 2",
@@ -253,7 +253,7 @@
             },
             {
               "name": "Listening 1",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Listening 2",
