@@ -1,5 +1,6 @@
 import type { VocabDay } from '@/types/vocabulary'
-import type { ExerciseSet, Flashcard, QuizQuestion } from '@/types/exercise'
+import type { BlankExercise, ExerciseSet, Flashcard, QuizQuestion } from '@/types/exercise'
+import { parseBlanks } from '@/data/exercises'
 import { shuffle } from '@/utils/text'
 
 /**
@@ -7,6 +8,7 @@ import { shuffle } from '@/utils/text'
  * `date` the words belong to and they appear on that day in the daily review.
  * - `focus`: the part of the word to call out (stress, prefix, suffix), e.g. 'UN' in 'unauthorised'
  * - `family`: forms leading to the word, e.g. little (adj) → less (adj) → lessen (v)
+ * - `blanks`: gap-filling sentences, answers in square brackets
  */
 export const vocabulary: VocabDay[] = [
   {
@@ -177,6 +179,154 @@ export const vocabulary: VocabDay[] = [
       },
     ],
   },
+  {
+    date: '2026-10-21',
+    title: 'Reading – Vocab revision 2 (ROOT Week 4)',
+    words: [
+      {
+        word: 'ensure sth',
+        focus: 'en',
+        ipa: 'ɪnˈʃʊə(r)',
+        pos: 'v',
+        meaning: 'đảm bảo',
+        family: [{ word: 'sure', pos: 'adj', meaning: 'chắc chắn' }],
+        example: "To ensure his dog's safety, Tam built a strong fence around the yard.",
+        note: 'Ensure (that) + mệnh đề: She ensured she had her IELTS certificate and passport.',
+      },
+      {
+        word: 'certificate',
+        focus: 'tif',
+        ipa: 'səˈtɪfɪkət',
+        pos: 'n',
+        meaning: 'chứng chỉ / giấy chứng nhận',
+        family: [{ word: 'certify sth', pos: 'v', meaning: 'chứng nhận' }],
+        example: 'She received a certificate for completing the first training course last week.',
+        note: 'Đuôi -ate trong danh từ đọc /ət/, không phải /eɪt/.',
+      },
+      {
+        word: 'passport',
+        ipa: 'ˈpɑːspɔːt',
+        pos: 'n',
+        meaning: 'hộ chiếu',
+        example: 'You should not forget to bring your passport when you travel internationally.',
+        note: 'To travel abroad, you must ensure your passport and visa are up-to-date.',
+      },
+      {
+        word: 'value sth',
+        ipa: 'ˈvæljuː',
+        pos: 'v',
+        meaning: 'coi trọng / trân trọng',
+        family: [
+          { word: 'value', pos: 'n', meaning: 'giá trị' },
+          { word: 'valuable', pos: 'adj', meaning: 'quý giá' },
+        ],
+        example: 'We value honesty and trust in our family above all other qualities.',
+        note: 'She valued this opportunity and couldn’t wait to experience a new country.',
+      },
+      {
+        word: 'encounter sb/sth',
+        focus: 'coun',
+        ipa: 'ɪnˈkaʊntə(r)',
+        pos: 'v',
+        meaning: 'chạm trán / gặp phải (khó khăn, vấn đề)',
+        example: 'At the airport, she encountered a problem: her suitcase was overweight.',
+        note: 'Encounter a problem / difficulties / bad weather.',
+      },
+      {
+        word: 'curious',
+        focus: 'ious',
+        ipa: 'ˈkjʊəriəs',
+        pos: 'adj',
+        meaning: 'tò mò / hiếu kì',
+        family: [{ word: 'curiosity', pos: 'n', meaning: 'sự tò mò' }],
+        example: 'Children are naturally curious and love to explore the world around them.',
+        note: 'Be curious about sth: She was curious about what was in her suitcase.',
+      },
+      {
+        word: 'cope with sth',
+        ipa: 'kəʊp',
+        pos: 'v',
+        meaning: 'đương đầu / đối phó với',
+        example:
+          'He learned to cope with stress by practicing meditation and deep breathing exercises.',
+        note: 'When Ngoc feels stressed, she finds it hard to cope with the pressure.',
+      },
+      {
+        word: 'depend on sb/sth',
+        focus: 'pend',
+        ipa: 'dɪˈpend',
+        pos: 'v',
+        meaning: 'dựa vào / phụ thuộc vào',
+        family: [
+          { word: 'dependent', pos: 'adj', meaning: 'phụ thuộc' },
+          { word: 'independent', pos: 'adj', meaning: 'độc lập' },
+        ],
+        example: 'You can depend on a good friend to help you in difficult times.',
+        note: 'Luôn đi với "on": Nhi must depend on luck for this!',
+      },
+      {
+        word: 'fence',
+        ipa: 'fens',
+        pos: 'n',
+        meaning: 'hàng rào',
+        example: "To ensure his dog's safety, Tam built a strong fence around the yard.",
+      },
+      {
+        word: 'breathing exercises',
+        ipa: 'ˈbriːðɪŋ ˈeksəsaɪzɪz',
+        pos: 'n',
+        meaning: 'bài tập hít thở',
+        family: [
+          { word: 'breath', pos: 'n', meaning: 'hơi thở (/breθ/)' },
+          { word: 'breathe', pos: 'v', meaning: 'thở (/briːð/)' },
+        ],
+        example: 'Deep breathing exercises help you relax when you feel stressed.',
+        note: 'Breath (n) /θ/ ≠ breathe (v) /ð/.',
+      },
+    ],
+    blanks: [
+      {
+        text: "To [ensure] his dog's safety, Tam built a strong [fence] around the yard.",
+        hint: 'đảm bảo · hàng rào',
+      },
+      {
+        text: 'When Ngoc feels stressed, she finds it hard to [cope with] the pressure.',
+        hint: 'đương đầu với',
+      },
+      {
+        text: 'We [value] honesty and trust in our family above all other qualities.',
+        hint: 'coi trọng',
+      },
+      {
+        text: 'During our trip, we had to [encounter] bad weather because it was the rainy season.',
+        hint: 'gặp phải',
+      },
+      {
+        text: 'She received a [certificate] for completing the first training course last week.',
+        hint: 'chứng chỉ',
+      },
+      {
+        text: 'You should not forget to bring your [passport] when you travel internationally.',
+        hint: 'hộ chiếu',
+      },
+      {
+        text: 'Children are naturally [curious] and love to explore the world around them.',
+        hint: 'tò mò',
+      },
+      {
+        text: 'He learned to [cope with] stress by practicing meditation and deep [breathing exercises].',
+        hint: 'đương đầu với · bài tập hít thở',
+      },
+      {
+        text: 'To travel abroad, you must [ensure] your passport and visa are up-to-date.',
+        hint: 'đảm bảo',
+      },
+      {
+        text: 'You can [depend on] a good friend to help you in difficult times.',
+        hint: 'dựa vào',
+      },
+    ],
+  },
 ]
 
 /** Vocabulary for one 'YYYY-MM-DD' day, if any. */
@@ -186,7 +336,7 @@ export function getVocabularyByDate(date: string): VocabDay | undefined {
 
 /**
  * Practice for a day's words: flashcards (word → meaning) and "Which word means…?" questions
- * whose wrong options are other words from the same day.
+ * whose wrong options are other words from the same day, plus the day's gap-filling sentences.
  */
 export function getVocabExercises(day: VocabDay): ExerciseSet {
   const lessonId = `vocab:${day.date}`
@@ -215,5 +365,13 @@ export function getVocabExercises(day: VocabDay): ExerciseSet {
               : w.note,
           }
         })
-  return { flashcards, quiz, blanks: [], rewrite: [] }
+  const blanks = (day.blanks ?? []).map((blank): BlankExercise => ({
+    id: `${lessonId}:blank:${blank.text}`,
+    kind: 'blank',
+    lessonId,
+    parts: parseBlanks(blank.text),
+    hint: blank.hint,
+    hintLabel: 'Meaning',
+  }))
+  return { flashcards, quiz, blanks, rewrite: [] }
 }

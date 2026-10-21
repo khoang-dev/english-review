@@ -1,3 +1,5 @@
+import type { BlankInput } from './exercise'
+
 /** One form in a word family, e.g. `satisfy (v)` on the way to `unsatisfactory`. */
 export interface WordForm {
   word: string
@@ -25,4 +27,6 @@ export interface VocabDay {
   /** Topic of the words, e.g. the reading they came from. */
   title?: string
   words: VocabWord[]
+  /** Gap-filling sentences for the day's words, e.g. `'We [value] honesty and trust.'` */
+  blanks?: BlankInput[]
 }

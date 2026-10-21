@@ -5,6 +5,7 @@ import {
   BookOutlined,
   EyeInvisibleOutlined,
   EyeOutlined,
+  FormOutlined,
   QuestionCircleOutlined,
   RetweetOutlined,
 } from '@ant-design/icons-vue'
@@ -19,10 +20,15 @@ const emit = defineEmits<{ practice: [set: ExerciseSet, tab?: PracticeTab] }>()
 
 const exercises = computed(() => getVocabExercises(props.day))
 
-const modes: { tab: PracticeTab; label: string; icon: Component }[] = [
+const allModes: { tab: PracticeTab; label: string; icon: Component }[] = [
   { tab: 'flashcards', label: 'Flashcards', icon: RetweetOutlined },
   { tab: 'quiz', label: 'Quiz', icon: QuestionCircleOutlined },
+  { tab: 'blanks', label: 'Gap filling', icon: FormOutlined },
 ]
+// Gap filling only for days that have sentences to fill in
+const modes = computed(() =>
+  allModes.filter((mode) => mode.tab !== 'blanks' || exercises.value.blanks.length),
+)
 
 /** `word` split around its `focus` part (first match, case-insensitive). */
 function wordParts(w: VocabWord): { text: string; focus: boolean }[] {
@@ -72,7 +78,7 @@ function reveal(word: string) {
           :key="mode.tab"
           type="button"
           :disabled="!exercises[mode.tab].length"
-          class="flex min-h-12 items-center gap-2 rounded-2xl bg-white px-3 text-left text-sm font-semibold text-orange-700 shadow-sm transition-colors hover:bg-orange-50 active:bg-orange-100 disabled:opacity-50"
+          class="flex min-h-12 items-center gap-2 rounded-2xl bg-white px-3 odd:last:col-span-2 text-left text-sm font-semibold text-orange-700 shadow-sm transition-colors hover:bg-orange-50 active:bg-orange-100 disabled:opacity-50"
           @click="emit('practice', exercises, mode.tab)"
         >
           <component :is="mode.icon" class="text-base" />
