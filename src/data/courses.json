@@ -233,11 +233,11 @@
             },
             {
               "name": "Reading 2",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Reading 3",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Reading 4",
@@ -249,7 +249,7 @@
             },
             {
               "name": "Vocab 2",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Listening 1",
