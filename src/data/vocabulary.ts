@@ -930,6 +930,54 @@ export const vocabulary: VocabDay[] = [
       },
     ],
   },
+  {
+    date: '2026-10-30',
+    title: 'Reading – Enrique Iglesias',
+    words: [
+      {
+        word: 'get divorced',
+        focus: 'vor',
+        ipa: 'dɪˈvɔːst',
+        pos: 'v',
+        meaning: 'ly hôn',
+        family: [{ word: 'divorce', pos: 'n', meaning: 'sự ly hôn' }],
+        example: 'When he was 3 years old, his parents got divorced.',
+        note: 'Get divorced (không có tân ngữ) = divorce sb. Trái nghĩa: get married. "-ced" đọc /st/.',
+      },
+      {
+        word: 'several',
+        ipa: 'ˈsevrəl',
+        pos: 'det',
+        meaning: 'một vài / nhiều (hơn 2, không quá nhiều)',
+        example: 'He sent some of his songs to several record companies.',
+        note: 'Several + danh từ đếm được số nhiều: several times, several days. Đọc 2 âm tiết /ˈsevrəl/.',
+      },
+      {
+        word: 'eventually',
+        focus: 'ven',
+        ipa: 'ɪˈventʃuəli',
+        pos: 'adv',
+        meaning: 'cuối cùng thì (sau một thời gian dài / nhiều khó khăn)',
+        family: [{ word: 'eventual', pos: 'adj', meaning: 'cuối cùng' }],
+        example: 'He eventually got a contract with a Mexican record company.',
+        note: 'Không có nghĩa "có lẽ". Gần nghĩa: finally, in the end.',
+      },
+    ],
+    blanks: [
+      {
+        text: 'When he was 3 years old, his parents [got divorced], and later he moved to Miami to live with his father.',
+        hint: 'ly hôn (quá khứ)',
+      },
+      {
+        text: 'When he sent some of his songs to [several] record companies, he used the name Enrique Martinez.',
+        hint: 'một vài',
+      },
+      {
+        text: 'He [eventually] got a contract with a Mexican record company.',
+        hint: 'cuối cùng thì',
+      },
+    ],
+  },
 ]
 
 /** Vocabulary for one 'YYYY-MM-DD' day, if any. */
