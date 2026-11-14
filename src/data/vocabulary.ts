@@ -1098,6 +1098,115 @@ export const vocabulary: VocabDay[] = [
       },
     ],
   },
+  {
+    date: '2026-11-14',
+    title: 'Listening – Singing school',
+    words: [
+      {
+        word: 'breathe correctly',
+        focus: 'breathe',
+        ipa: 'briːð kəˈrektli',
+        pos: 'v',
+        meaning: 'thở đúng cách',
+        family: [
+          { word: 'breath', pos: 'n', meaning: 'hơi thở' },
+          { word: 'correct', pos: 'adj', meaning: 'đúng' },
+        ],
+        example: 'When you learn to sing, you need to learn to breathe correctly.',
+        note: 'Breathe /briːð/ (động từ, "th" đọc /ð/, có "e" cuối) ≠ breath /breθ/ (danh từ). Correctly là trạng từ bổ nghĩa cho động từ.',
+      },
+      {
+        word: 'in better shape',
+        ipa: 'ˈbetə ʃeɪp',
+        pos: 'idiom',
+        meaning: 'khoẻ hơn / có thể trạng tốt hơn',
+        family: [{ word: 'in good shape', pos: 'idiom', meaning: 'khoẻ mạnh / sung sức' }],
+        example: 'People who sing are often in better shape and healthier than people who don’t.',
+        note: 'Trái nghĩa: out of shape (không khoẻ, kém sung sức). Get in shape: tập cho khoẻ.',
+      },
+      {
+        word: 'breathing exercises',
+        focus: 'breath',
+        ipa: 'ˈbriːðɪŋ ˈeksəsaɪzɪz',
+        pos: 'n',
+        meaning: 'các bài tập thở',
+        family: [{ word: 'breathe', pos: 'v', meaning: 'thở' }],
+        example: 'First we did a lot of listening and breathing exercises.',
+        note: 'Breathing đọc /ˈbriːðɪŋ/ — giữ âm /iː/ dài như breathe.',
+      },
+      {
+        word: 'sort of sth',
+        ipa: 'sɔːt',
+        pos: 'n',
+        meaning: 'loại / kiểu (cái gì)',
+        example: 'What sorts of things?',
+        note: 'Sort = kind = type. What sort(s) of …? = Loại … nào? Kind of / sort of (khẩu ngữ) còn có nghĩa "hơi hơi, kiểu như".',
+      },
+      {
+        word: 'surprised look',
+        focus: 'prised',
+        ipa: 'səˈpraɪzd lʊk',
+        pos: 'n',
+        meaning: 'vẻ mặt ngạc nhiên',
+        family: [
+          { word: 'surprise', pos: 'n', meaning: 'sự ngạc nhiên' },
+          { word: 'surprising', pos: 'adj', meaning: 'gây ngạc nhiên (sự việc)' },
+        ],
+        example: 'It’s easier to sing high notes if you sing with a surprised look on your face.',
+        note: 'Surprised (-ed): người cảm thấy ngạc nhiên; surprising (-ing): sự việc gây ngạc nhiên. A look on your face: vẻ mặt.',
+      },
+      {
+        word: 'harmony',
+        focus: 'har',
+        ipa: 'ˈhɑːməni',
+        pos: 'n',
+        meaning: 'hoà âm / sự hài hoà',
+        family: [{ word: 'harmonious', pos: 'adj', meaning: 'hài hoà / hoà hợp' }],
+        example: 'At the end of the day, we were singing in almost perfect harmony.',
+        note: 'Sing in harmony: hát hoà giọng. Live in harmony (with sb): sống hoà thuận.',
+      },
+      {
+        word: 'demonstration',
+        focus: 'stra',
+        ipa: 'ˌdemənˈstreɪʃn',
+        pos: 'n',
+        meaning: 'sự minh hoạ / trình diễn mẫu',
+        family: [{ word: 'demonstrate sth', pos: 'v', meaning: 'chứng minh / làm mẫu' }],
+        example: 'Could you two give us a little demonstration?',
+        note: 'Give a demonstration: làm mẫu, trình diễn. Còn có nghĩa "cuộc biểu tình". Nhấn âm STRA.',
+      },
+    ],
+    blanks: [
+      {
+        text: 'When you learn to sing, you need to learn to [breathe] [correctly].',
+        hint: 'thở · đúng cách',
+      },
+      {
+        text: 'People who sing are often in better [shape] and healthier than people who don’t.',
+        hint: 'thể trạng',
+      },
+      {
+        text: 'First we did a lot of listening and [breathing] exercises.',
+        hint: 'thở (V-ing)',
+      },
+      {
+        text: 'What [sorts] of things?',
+        hint: 'loại / kiểu',
+      },
+      {
+        text: 'It’s easier to sing high notes if you sing with a [surprised] look on your face.',
+        hint: 'ngạc nhiên (-ed)',
+      },
+      {
+        text: 'At the end of the day, we were singing in almost perfect [harmony].',
+        hint: 'hoà âm',
+      },
+      {
+        text: 'Could you two give us a little [demonstration]?',
+        hint: 'màn trình diễn mẫu',
+      },
+    ],
+  },
 ]
 
 /** Vocabulary for one 'YYYY-MM-DD' day, if any. */
