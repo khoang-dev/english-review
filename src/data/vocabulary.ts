@@ -1350,6 +1350,152 @@ export const vocabulary: VocabDay[] = [
       },
     ],
   },
+  {
+    date: '2026-11-17',
+    title: 'Reading – Face Recognition Technology',
+    words: [
+      {
+        word: 'grow a beard',
+        ipa: 'ɡrəʊ ə bɪəd',
+        pos: 'idiom',
+        meaning: 'để râu',
+        example:
+          'These things do not change, so growing a beard or wearing glasses will not fool the scanner.',
+        note: 'Beard /bɪəd/: râu quai nón / râu cằm; moustache: ria mép. Grow (V-ing) làm chủ ngữ: growing a beard.',
+      },
+      {
+        word: 'facial recognition',
+        focus: 'fa',
+        ipa: 'ˈfeɪʃl ˌrekəɡˈnɪʃn',
+        pos: 'n',
+        meaning: 'nhận diện khuôn mặt',
+        family: [
+          { word: 'face', pos: 'n', meaning: 'khuôn mặt' },
+          { word: 'recognize sb/sth', pos: 'v', meaning: 'nhận ra / nhận diện' },
+        ],
+        example: 'Facial recognition has many uses in a variety of different fields.',
+        note: 'Facial là tính từ của face, đọc /ˈfeɪʃl/. Recognition nhấn âm NI.',
+      },
+      {
+        word: 'annoyance',
+        focus: 'noy',
+        ipa: 'əˈnɔɪəns',
+        pos: 'n',
+        meaning: 'điều phiền toái / sự khó chịu',
+        family: [
+          { word: 'annoy sb', pos: 'v', meaning: 'làm ai khó chịu' },
+          { word: 'annoying', pos: 'adj', meaning: 'gây khó chịu' },
+        ],
+        example: 'Security problems can cause anything from small annoyances to serious problems.',
+        note: 'Annoyed (-ed): người thấy khó chịu; annoying (-ing): sự việc gây khó chịu.',
+      },
+      {
+        word: 'aid sb',
+        ipa: 'eɪd',
+        pos: 'v',
+        meaning: 'hỗ trợ / giúp đỡ',
+        example: 'Advanced facial recognition software can also aid police in investigations.',
+        note: 'Aid (trang trọng) = help. Aid sb in (doing) sth. Danh từ: first aid (sơ cứu).',
+      },
+      {
+        word: 'kidnap sb',
+        focus: 'kid',
+        ipa: 'ˈkɪdnæp',
+        pos: 'v',
+        meaning: 'bắt cóc',
+        family: [{ word: 'kidnapper', pos: 'n', meaning: 'kẻ bắt cóc' }],
+        example: 'It can find people who are lost or were kidnapped.',
+        note: 'V2/V3: kidnapped (gấp đôi "p" kiểu Anh). Bị động: be kidnapped.',
+      },
+      {
+        word: 'obviously',
+        focus: 'ob',
+        ipa: 'ˈɒbviəsli',
+        pos: 'adv',
+        meaning: 'rõ ràng là / hiển nhiên là',
+        family: [{ word: 'obvious', pos: 'adj', meaning: 'rõ ràng / hiển nhiên' }],
+        example:
+          'Obviously, since face recognition works based on computer code, there is a small chance of it not working properly.',
+        note: 'Đã gặp ngày 16 Nov (Gamers reading).',
+      },
+      {
+        word: 'majority',
+        focus: 'jor',
+        ipa: 'məˈdʒɒrəti',
+        pos: 'n',
+        meaning: 'phần lớn / đa số',
+        family: [{ word: 'major', pos: 'adj', meaning: 'chính / lớn / quan trọng' }],
+        example:
+          'The software was mostly developed in countries where the majority of people are Caucasian.',
+        note: 'The majority of + N số nhiều. Trái nghĩa: minority (thiểu số). Nhấn âm JOR.',
+      },
+      {
+        word: 'Caucasian',
+        focus: 'ca',
+        ipa: 'kɔːˈkeɪziən',
+        pos: 'adj',
+        meaning: 'người da trắng (gốc châu Âu)',
+        example:
+          'In countries where the majority of people are Caucasian, the software works less well on other faces.',
+        note: 'Viết hoa chữ C. Nhấn âm CA: cau-CA-sian.',
+      },
+      {
+        word: 'claim',
+        ipa: 'kleɪm',
+        pos: 'v',
+        meaning: 'khẳng định / cho rằng (chưa chắc đúng)',
+        example:
+          'Critics of face identification claim that facial recognition threatens people’s privacy.',
+        note: 'Claim that + mệnh đề. Danh từ: a claim (lời khẳng định). Make a claim: đưa ra lời tuyên bố.',
+      },
+      {
+        word: 'harm',
+        ipa: 'hɑːm',
+        pos: 'n',
+        meaning: 'sự tổn hại / thiệt hại',
+        family: [
+          { word: 'harmful', pos: 'adj', meaning: 'có hại' },
+          { word: 'harmless', pos: 'adj', meaning: 'vô hại' },
+        ],
+        example: 'They can be located and removed from the area before he or she can do any harm.',
+        note: 'Do harm (to sb) / do any harm: gây hại. Cũng là động từ: harm sb/sth.',
+      },
+    ],
+    blanks: [
+      {
+        text: 'Growing a [beard] or wearing glasses will not fool the scanner.',
+        hint: 'râu',
+      },
+      {
+        text: '[Facial] [recognition] has many uses in a variety of different fields.',
+        hint: 'thuộc khuôn mặt · sự nhận diện',
+      },
+      {
+        text: 'Security problems can cause anything from small [annoyances] to serious problems.',
+        hint: 'điều phiền toái (số nhiều)',
+      },
+      {
+        text: 'Software can also [aid] police in investigations by finding people who are lost or were [kidnapped].',
+        hint: 'hỗ trợ · bị bắt cóc (V3)',
+      },
+      {
+        text: '[Obviously], there is a small chance of it not working properly.',
+        hint: 'rõ ràng là',
+      },
+      {
+        text: 'It was developed in countries where the [majority] of people are [Caucasian].',
+        hint: 'đa số · người da trắng',
+      },
+      {
+        text: 'Critics of face identification [claim] that facial recognition threatens people’s privacy.',
+        hint: 'cho rằng',
+      },
+      {
+        text: 'They can be removed from the area before he or she can do any [harm].',
+        hint: 'sự tổn hại',
+      },
+    ],
+  },
 ]
 
 /** Vocabulary for one 'YYYY-MM-DD' day, if any. */
