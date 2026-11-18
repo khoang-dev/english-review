@@ -241,7 +241,7 @@
             },
             {
               "name": "Reading 4",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Vocab 1",
@@ -300,11 +300,11 @@
             },
             {
               "name": "Reading 1",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Reading 2",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Reading 3",
@@ -312,7 +312,7 @@
             },
             {
               "name": "Reading 4",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Vocab 1",
@@ -320,7 +320,7 @@
             },
             {
               "name": "Vocab 2",
-              "completed": false
+              "completed": true
             },
             {
               "name": "Listening 1",
@@ -336,7 +336,7 @@
             },
             {
               "name": "Listening 4",
-              "completed": false
+              "completed": true
             }
           ],
           "doc": [
