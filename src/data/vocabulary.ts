@@ -1916,6 +1916,245 @@ export const vocabulary: VocabDay[] = [
       },
     ],
   },
+  {
+    date: '2026-11-21',
+    title: 'Reading – Work-from-Home Scams',
+    words: [
+      {
+        word: 'scam',
+        ipa: 'skæm',
+        pos: 'n',
+        meaning: 'trò lừa đảo (để chiếm tiền)',
+        family: [
+          { word: 'scam sb (out of sth)', pos: 'v', meaning: 'lừa đảo ai (lấy mất cái gì)' },
+        ],
+        example: 'Many are fake and may actually scam you out of your own money.',
+        note: 'Tiêu đề bài: scam là noun. Trong câu "many … may scam you": scam là verb (động từ chính thứ 2 sau may, chủ ngữ là many). Scammer: kẻ lừa đảo.',
+      },
+      {
+        word: 'cash',
+        ipa: 'kæʃ',
+        pos: 'n',
+        meaning: 'tiền mặt',
+        example: 'You will find hundreds of jobs promising fast cash with low effort.',
+        note: 'Cash: tiền mặt; money: tiền nói chung. Pay in cash: trả bằng tiền mặt.',
+      },
+      {
+        word: 'effort',
+        focus: 'ef',
+        ipa: 'ˈefət',
+        pos: 'n',
+        meaning: 'nỗ lực / công sức',
+        example: 'You will find hundreds of jobs promising fast cash with low effort.',
+        note: 'Make an effort (to do sth): cố gắng. Nhấn âm đầu: EF-fort.',
+      },
+      {
+        word: 'seek sb/sth',
+        ipa: 'siːk',
+        pos: 'v',
+        meaning: 'tìm kiếm',
+        example:
+          'These companies are seeking people to make products, mail letters, or make telephone sales calls.',
+        note: 'Seek – sought – sought. Trang trọng hơn look for. Job seeker: người tìm việc.',
+      },
+      {
+        word: 'consider sth',
+        focus: 'si',
+        ipa: 'kənˈsɪdə(r)',
+        pos: 'v',
+        meaning: 'cân nhắc / suy xét',
+        family: [{ word: 'consideration', pos: 'n', meaning: 'sự cân nhắc' }],
+        example: 'There are several things to watch out for when considering a work-from-home job.',
+        note: 'Consider + V-ing: consider moving (không dùng to V).',
+      },
+      {
+        word: 'initial',
+        focus: 'ni',
+        ipa: 'ɪˈnɪʃl',
+        pos: 'adj',
+        meaning: 'ban đầu / lúc đầu / đầu tiên',
+        family: [{ word: 'initially', pos: 'adv', meaning: 'lúc đầu' }],
+        example: 'First, be careful of any organization that asks you for an initial investment.',
+        note: '"t" đọc /ʃ/: i-NI-tial.',
+      },
+      {
+        word: 'assemble sth',
+        focus: 'sem',
+        ipa: 'əˈsembl',
+        pos: 'v',
+        meaning: 'lắp ráp; tụ họp (một nhóm người)',
+        family: [{ word: 'assembly', pos: 'n', meaning: 'sự lắp ráp / buổi tập trung' }],
+        example:
+          'If the job is to assemble products, you might be asked to purchase the instructions and materials up front.',
+        note: 'Nhớ câu nói của Captain America: "Avengers, assemble!" (tập hợp lại!).',
+      },
+      {
+        word: 'profit from sth',
+        focus: 'prof',
+        ipa: 'ˈprɒfɪt',
+        pos: 'v',
+        meaning: 'kiếm lời / hưởng lợi từ cái gì',
+        family: [
+          { word: 'profit', pos: 'n', meaning: 'lợi nhuận' },
+          { word: 'profitable', pos: 'adj', meaning: 'có lợi nhuận' },
+        ],
+        example: 'You are out of money, with no chance of profiting from your initial investment.',
+        note: 'Ở đây profit là verb (profiting), không phải noun "lợi nhuận" như thường gặp. Profitable đã gặp ngày 16 Nov.',
+      },
+      {
+        word: 'advance sth',
+        focus: 'vance',
+        ipa: 'ədˈvɑːns',
+        pos: 'v',
+        meaning: 'ứng trước (tiền); đẩy mạnh / thúc đẩy',
+        family: [
+          { word: 'advance', pos: 'n', meaning: 'khoản ứng trước; sự tiến bộ' },
+          { word: 'advanced', pos: 'adj', meaning: 'tiên tiến' },
+        ],
+        example:
+          'Another scam is when the company offers to advance your salary as a supposed sign of good will.',
+        note: 'Advance your salary: trả trước lương cho bạn. In advance: trước (pay in advance). Advanced (adj) đã gặp ngày 17 Nov.',
+      },
+      {
+        word: 'sign',
+        ipa: 'saɪn',
+        pos: 'n',
+        meaning: 'dấu hiệu',
+        example: 'The company offers to advance your salary as a supposed sign of good will.',
+        note: 'A sign of sth: dấu hiệu của. Good will: thiện chí. "g" câm: /saɪn/; nhưng signature /ˈsɪɡnətʃə/ có đọc /g/.',
+      },
+      {
+        word: 'accidentally',
+        focus: 'den',
+        ipa: 'ˌæksɪˈdentəli',
+        pos: 'adv',
+        meaning: 'một cách vô tình / tình cờ',
+        family: [
+          { word: 'accident', pos: 'n', meaning: 'tai nạn / sự tình cờ' },
+          { word: 'accidental', pos: 'adj', meaning: 'tình cờ / ngẫu nhiên' },
+        ],
+        example:
+          'Before the check has cleared, the company tells you they accidentally overpaid you.',
+        note: 'By accident = accidentally. Trái nghĩa: on purpose / deliberately (cố ý).',
+      },
+      {
+        word: 'overpay sb',
+        focus: 'over',
+        ipa: 'ˌəʊvəˈpeɪ',
+        pos: 'v',
+        meaning: 'trả quá nhiều (trả dư)',
+        family: [{ word: 'pay', pos: 'v', meaning: 'trả tiền' }],
+        example: 'The company tells you they accidentally overpaid you.',
+        note: 'Over + pay = trả quá mức. Overpay – overpaid – overpaid. Giống: overeat, oversleep, overwork.',
+      },
+      {
+        word: 'legitimate',
+        focus: 'git',
+        ipa: 'lɪˈdʒɪtɪmət',
+        pos: 'adj',
+        meaning: 'hợp pháp / chính đáng',
+        family: [{ word: 'legitimately', pos: 'adv', meaning: 'một cách hợp pháp' }],
+        example:
+          'After you have paid back a part of the money, you discover their check was not legitimate.',
+        note: 'Đuôi "-ate" ở tính từ đọc /ət/, không phải /eɪt/.',
+      },
+      {
+        word: 'illegitimate',
+        focus: 'il',
+        ipa: 'ˌɪləˈdʒɪtəmət',
+        pos: 'adj',
+        meaning: 'không hợp pháp / bất chính',
+        family: [{ word: 'legitimate', pos: 'adj', meaning: 'hợp pháp' }],
+        example: 'If the company cannot, or will not, do this, it is probably illegitimate.',
+        note: 'Tiền tố "il-" = không, dùng trước từ bắt đầu bằng "l": illegal, illogical, illiterate.',
+      },
+      {
+        word: 'pocket',
+        focus: 'pock',
+        ipa: 'ˈpɒkɪt',
+        pos: 'n',
+        meaning: 'túi (quần áo); tiền túi',
+        example:
+          'Now you have paid money from your own pocket and do not have any money from the company.',
+        note: 'From your own pocket / out of pocket: tự bỏ tiền túi. Pocket money: tiền tiêu vặt.',
+      },
+      {
+        word: 'qualification',
+        focus: 'ca',
+        ipa: 'ˌkwɒlɪfɪˈkeɪʃn',
+        pos: 'n',
+        meaning: 'bằng cấp / trình độ chuyên môn',
+        family: [
+          { word: 'qualify', pos: 'v', meaning: 'đủ điều kiện / đạt chuẩn' },
+          { word: 'qualified', pos: 'adj', meaning: 'có bằng cấp / đủ trình độ' },
+        ],
+        example:
+          'It is best to get the qualifications you need so that you can legitimately make money later.',
+        note: 'Nhấn âm CA: qua-li-fi-CA-tion.',
+      },
+      {
+        word: 'reference',
+        focus: 'ref',
+        ipa: 'ˈrefrəns',
+        pos: 'n',
+        meaning: 'người giới thiệu / người xác nhận (cho công việc); nguồn tham khảo',
+        family: [{ word: 'refer to sth', pos: 'v', meaning: 'nhắc đến / tham khảo' }],
+        example:
+          'Ask the company to provide references who can tell you about their work experiences.',
+        note: 'Reference ở đây là người mình có thể hỏi thăm về công ty / công việc. Đọc 2 âm tiết /ˈrefrəns/.',
+      },
+    ],
+    blanks: [
+      {
+        text: 'Many are fake and may actually [scam] you out of your own money.',
+        hint: 'lừa đảo (v)',
+      },
+      {
+        text: 'You will find hundreds of jobs promising fast [cash] with low [effort].',
+        hint: 'tiền mặt · nỗ lực',
+      },
+      {
+        text: 'These companies are [seeking] people to make products, mail letters, or make telephone sales calls.',
+        hint: 'tìm kiếm (V-ing)',
+      },
+      {
+        text: 'There are several things to watch out for when [considering] a work-from-home job.',
+        hint: 'cân nhắc (V-ing)',
+      },
+      {
+        text: 'Be careful of any organization that asks you for an [initial] investment.',
+        hint: 'ban đầu',
+      },
+      {
+        text: 'If the job is to [assemble] products, you might be asked to purchase the instructions and materials up front.',
+        hint: 'lắp ráp',
+      },
+      {
+        text: 'You are out of money, with no chance of [profiting] from your initial investment.',
+        hint: 'kiếm lời (V-ing)',
+      },
+      {
+        text: 'The company offers to [advance] your salary as a supposed [sign] of good will.',
+        hint: 'ứng trước · dấu hiệu',
+      },
+      {
+        text: 'The company tells you they [accidentally] [overpaid] you.',
+        hint: 'vô tình · trả dư (V2)',
+      },
+      {
+        text: 'You discover their check was not [legitimate]. Now you have paid money from your own [pocket].',
+        hint: 'hợp pháp · túi',
+      },
+      {
+        text: 'It is best to get the [qualifications] you need so that you can legitimately make money later.',
+        hint: 'bằng cấp',
+      },
+      {
+        text: 'Ask the company to provide [references]. If the company cannot, or will not, do this, it is probably [illegitimate].',
+        hint: 'người xác nhận · không hợp pháp',
+      },
+    ],
+  },
 ]
 
 /** Vocabulary for one 'YYYY-MM-DD' day, if any. */
