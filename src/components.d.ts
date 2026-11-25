@@ -15,6 +15,7 @@ declare module 'vue' {
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
     ADrawer: typeof import('ant-design-vue/es')['Drawer']
     AInput: typeof import('ant-design-vue/es')['Input']
+    AInputPassword: typeof import('ant-design-vue/es')['InputPassword']
     ASegmented: typeof import('ant-design-vue/es')['Segmented']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     CategoryPill: typeof import('./components/CategoryPill.vue')['default']
@@ -39,6 +40,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SentenceCard: typeof import('./components/SentenceCard.vue')['default']
+    SyncButton: typeof import('./components/SyncButton.vue')['default']
     VocabularyReview: typeof import('./components/VocabularyReview.vue')['default']
   }
 }

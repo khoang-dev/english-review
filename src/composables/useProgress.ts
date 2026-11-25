@@ -1,25 +1,12 @@
 import { computed, reactive, watch } from 'vue'
 import { todayKey } from '@/utils/date'
+import type { ItemStat, ProgressState } from '@/types/progress'
 
 /**
  * Practice progress shared by every exercise and the knowledge summary, saved in
- * localStorage (per browser). Each exercise is tracked by its stable id (src/data/exercises.ts).
+ * localStorage and synced across devices when a sync key is set (src/composables/useSync.ts).
+ * Each exercise is tracked by its stable id (src/data/exercises.ts).
  */
-
-export interface ItemStat {
-  right: number
-  wrong: number
-  /** Day key of the last attempt. */
-  last: string
-  /** The last attempt was right (or the item was marked as known). */
-  known: boolean
-}
-
-interface ProgressState {
-  items: Record<string, ItemStat>
-  /** Day keys on which something was practised. */
-  practiceDays: string[]
-}
 
 const STORAGE_KEY = 'english-review:progress:v1'
 
@@ -59,6 +46,7 @@ function record(id: string, correct: boolean) {
   else stat.wrong++
   stat.last = todayKey()
   stat.known = correct
+  stat.updatedAt = Date.now()
   state.items[id] = stat
   markPracticedToday()
 }
@@ -67,6 +55,7 @@ function record(id: string, correct: boolean) {
 function setKnown(id: string, known: boolean) {
   const stat = state.items[id] ?? { right: 0, wrong: 0, last: todayKey(), known }
   stat.known = known
+  stat.updatedAt = Date.now()
   state.items[id] = stat
   markPracticedToday()
 }
