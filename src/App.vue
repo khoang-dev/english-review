@@ -3,12 +3,16 @@ import type { Component } from 'vue'
 import { BookOutlined, CalendarOutlined, FireOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { tabRoute, useTab } from '@/router/tabs'
 import type { Tab } from '@/router/tabs'
+import { useSync } from '@/composables/useSync'
+import SyncButton from '@/components/SyncButton.vue'
 
 const navItems: { tab: Tab; label: string; icon: Component }[] = [
   { tab: 'home', label: 'Plan', icon: FireOutlined },
   { tab: 'review', label: 'Daily review', icon: CalendarOutlined },
   { tab: 'mistakes', label: 'Mistakes', icon: BookOutlined },
 ]
+
+useSync().startSync()
 
 // RouterLink's isActive ignores the query, so compare the tab ourselves
 const currentTab = useTab()
@@ -62,6 +66,8 @@ function reload() {
                 </a>
               </RouterLink>
             </nav>
+
+            <SyncButton />
 
             <button
               type="button"

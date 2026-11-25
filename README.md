@@ -72,6 +72,30 @@ hand-written ones with the optional `exercises` field on a lesson (types in
 Results are kept in `localStorage` (`src/composables/useProgress.ts`) and feed the review summary
 and the 30-day grid.
 
+## Progress sync (Vercel backend)
+
+Practice results sync across devices through one Vercel function, `api/progress.ts`, which stores
+the progress as a single JSON value in Upstash Redis. The cloud button in the header opens the
+sync drawer: enter the sync key once per device. Each sync downloads the saved progress, merges it
+with the device's own (the newer copy of each exercise wins, practised days are combined) and
+uploads the result (`src/composables/useSync.ts`, `src/utils/progressMerge.ts`). It runs on start,
+a couple of seconds after practising, when the tab comes back into view and when the device is
+back online.
+
+Set up once on Vercel:
+
+1. Import the repo as a Vercel project (framework: Vite). The `api/` folder is deployed as
+   functions next to the app.
+2. **Storage → Upstash for Redis** (Marketplace) → create a free database and connect it to the
+   project. It adds `KV_REST_API_URL` and `KV_REST_API_TOKEN`.
+3. **Settings → Environment Variables** → add `SYNC_TOKEN`, a long random string (e.g.
+   `openssl rand -base64 32`). This is the sync key you type into the app.
+4. Redeploy, open the app, tap the cloud button and enter the key.
+
+Without a key the app works as before, saving to this browser only. `npm run dev` doesn't serve
+`api/`; run `npx vercel dev` to try sync locally, or set `VITE_SYNC_API_URL` to a deployed origin
+(the function allows cross-origin requests; the key is still required).
+
 ## Daily review
 
 Pages are tabs of the root URL, picked by the `tab` query (`src/router/tabs.ts`): `/` is the plan,
